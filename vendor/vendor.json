@@ -1,0 +1,40 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "sxluRJHmkjYbZbKN2Ol9V86quHU=",
+			"path": "github.com/go-yaml/yaml",
+			"revision": "bec87e4332aede01fb63a4ab299d8af28480cd96",
+			"revisionTime": "2014-09-22T21:32:25Z"
+		},
+		{
+			"checksumSHA1": "xZuhljnmBysJPta/lMyYmJdujCg=",
+			"path": "github.com/mattn/go-isatty",
+			"revision": "30a891c33c7cde7b02a981314b4228ec99380cca",
+			"revisionTime": "2016-11-23T14:36:37Z"
+		},
+		{
+			"checksumSHA1": "OfTtsGbmK3BBWGvGfXJ1BV3fzmY=",
+			"origin": "github.com/kyoh86/aec",
+			"path": "github.com/morikuni/aec",
+			"revision": "7792b9cec01198f36202b1da1d70caa76c612d79",
+			"revisionTime": "2017-01-11T09:34:33Z",
+			"version": "variadic-functions",
+			"versionExact": "variadic-functions"
+		},
+		{
+			"checksumSHA1": "Dxx6g7zOGVBBsGXFonNXJfALWDA=",
+			"path": "github.com/wacul/ptr",
+			"revision": "f507964099fbc65e205ea7e890c0c0b6f58381a6",
+			"revisionTime": "2016-04-21T08:53:19Z"
+		},
+		{
+			"checksumSHA1": "uTQtOqR0ePMMcvuvAIksiIZxhqU=",
+			"path": "golang.org/x/sys/unix",
+			"revision": "d75a52659825e75fff6158388dddc6a5b04f9ba5",
+			"revisionTime": "2016-12-14T18:38:57Z"
+		}
+	],
+	"rootPath": "github.com/kyoh86/richgo"
+}

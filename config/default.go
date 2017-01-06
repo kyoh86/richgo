@@ -1,0 +1,56 @@
+package config
+
+import "github.com/wacul/ptr"
+
+var defaultConfig Config
+
+func init() {
+	var long = LabelTypeLong
+	defaultConfig = Config{
+		LabelType: &long,
+		BuildStyle: &Style{
+			Bold: ptr.Bool(true),
+			Foreground: &Color{
+				Type: ColorTypeName,
+				Name: Yellow,
+			},
+		},
+		StartStyle: &Style{
+			Foreground: &Color{
+				Type: ColorTypeName,
+				Name: LightBlack,
+			},
+		},
+		PassStyle: &Style{
+			Foreground: &Color{
+				Type: ColorTypeName,
+				Name: Green,
+			},
+		},
+		FailStyle: &Style{
+			Bold: ptr.Bool(true),
+			Foreground: &Color{
+				Type: ColorTypeName,
+				Name: Red,
+			},
+		},
+		SkipStyle: &Style{
+			Foreground: &Color{
+				Type: ColorTypeName,
+				Name: LightBlack,
+			},
+		},
+		FileStyle: &Style{
+			Foreground: &Color{
+				Type: ColorTypeName,
+				Name: Cyan,
+			},
+		},
+		LineStyle: &Style{
+			Foreground: &Color{
+				Type: ColorTypeName,
+				Name: Magenta,
+			},
+		},
+	}
+}

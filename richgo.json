@@ -1,0 +1,234 @@
+{
+  "version": 1,
+  "width": 180,
+  "height": 45,
+  "duration": 6.0,
+  "command": null,
+  "title": "rich-go",
+  "env": {
+    "TERM": "xterm-256color",
+    "SHELL": "/bin/zsh"
+  },
+  "stdout": [
+    [
+      0.5,
+      "\u001b[1m\u001b[7m%\u001b[27m\u001b[1m\u001b[0m                                                                                                                                                                                   \r \r"
+    ],
+    [
+      0.1,
+      "\r\u001b[0m\u001b[27m\u001b[24m\u001b[J\r\n\u001b[34m$\u001b[39m "
+    ],
+    [
+      0.1,
+      "\u001b[?2004h"
+    ],
+    [
+      0.05,
+      "\u001b[32m.\u001b[39m"
+    ],
+    [
+      0.05,
+      "\b\u001b[39m\u001b[4m.\u001b[4m/\u001b[24m"
+    ],
+    [
+      0.05,
+      "\b\b\u001b[4m.\u001b[4m/\u001b[4ms\u001b[24m"
+    ],
+    [
+      0.05,
+      "\b\u001b[4ms\u001b[4ma\u001b[24m"
+    ],
+    [
+      0.05,
+      "\b\u001b[4ma\u001b[4mm\u001b[24m"
+    ],
+    [
+      0.05,
+      "\b\u001b[4mm\u001b[4mp\u001b[24m"
+    ],
+    [
+      0.05,
+      "\b\u001b[4mp\u001b[4ml\u001b[24m"
+    ],
+    [
+      0.05,
+      "\b\u001b[4ml\u001b[4me\u001b[24m"
+    ],
+    [
+      0.05,
+      "\b\u001b[4me\u001b[4m/\u001b[24m"
+    ],
+    [
+      0.05,
+      "\b\u001b[4m/\u001b[4mr\u001b[24m"
+    ],
+    [
+      0.05,
+      "\b\u001b[4mr\u001b[4mu\u001b[24m"
+    ],
+    [
+      0.05,
+      "\b\u001b[4mu\u001b[4mn\u001b[24m"
+    ],
+    [
+      0.05,
+      "\b\u001b[4mn\u001b[4m.\u001b[24m"
+    ],
+    [
+      0.05,
+      "\b\u001b[4m.\u001b[4ms\u001b[24m"
+    ],
+    [
+      0.1,
+      "\u001b[14D\u001b[24m\u001b[32m.\u001b[24m\u001b[32m/\u001b[24m\u001b[32ms\u001b[24m\u001b[32ma\u001b[24m\u001b[32mm\u001b[24m\u001b[32mp\u001b[24m\u001b[32ml\u001b[24m\u001b[32me\u001b[24m\u001b[32m/\u001b[24m\u001b[32mr\u001b[24m\u001b[32mu\u001b[24m\u001b[32mn\u001b[24m\u001b[32m.\u001b[24m\u001b[32ms\u001b[32mh\u001b[39m"
+    ],
+    [
+      0.4,
+      "\u001b[?2004l\r\r\n"
+    ],
+    [
+      0.1,
+      "=====================================   go test   =====================================\r\n"
+    ],
+    [
+      0.1,
+      "# github.com/kyoh86/richgo/sample/buildfail\r\nsample/buildfail/buildfail_test.go:6: t.Foo undefined (type *testing.T has no field or method Foo)\r\n"
+    ],
+    [
+      1.0,
+      "=== RUN   TestSampleNG\r\n=== RUN   TestSampleNG/SubtestNG\r\n--- FAIL: TestSampleNG (0.0s)\r\n\tsample_ng_test.go:9: It's not OK... :(\r\n    --- FAIL: TestSampleNG/SubtestNG (0.0s)\r\n    \tsample_ng_test.go:13: It's also not OK... :(\r\n=== RUN   TestSampleOK\r\n=== RUN   TestSampleOK/SubtestOK\r\ntime:2017-01-01T01:01:01+09:00\r\n--- PASS: TestSampleOK (0.0s)\r\n\tsample_ok_test.go:11: It's OK!\r\n    --- PASS: TestSampleOK/SubtestOK (0.0s)\r\n    \tsample_ok_test.go:15: It's also OK!\r\n=== RUN   TestSampleSkip\r\n--- SKIP: TestSampleSkip (0.0s)\r\n\tsample_skip_test.go:6: \r\n=== RUN   TestSampleSkipSub\r\n=== RUN   TestSampleSkipSub/SubtestSkip\r\n--- PASS: TestSampleSkipSub (0.0s)\r\n    --- SKIP: TestSampleSkipSub/SubtestSkip (0.0s)\r\n    \tsample_skip_test.go:11: \r\n=== RUN   TestSampleTimeout\r\n=== RUN   TestSampleTimeout/SubtestTimeout\r\n--- PASS: TestSampleTimeout (3.0s)\r\n    --- PASS: TestSampleTimeout/SubtestTimeout (3.0s)\r\nFAIL\r\nFAIL\tgithub.com/kyoh86/richgo/sample\t3.0s\r\nFAIL\tgithub.com/kyoh86/richgo/sample/buildfail [build faile"
+    ],
+    [
+      0.1,
+      "d]\r\n?   \tgithub.com/kyoh86/richgo/sample/notest\t[no test files]\r\n"
+    ],
+    [
+      0.1,
+      "\r\n===================================== richgo test =====================================\r\n"
+    ],
+    [
+      0.3,
+      "\u001b[49m\u001b[33m\u001b[1mBUILD| github.com/kyoh86/richgo/sample/buildfail\u001b[0m\r\n"
+    ],
+    [
+      0.1,
+      "\u001b[49m\u001b[33m\u001b[1m     | \u001b[49m\u001b[36msample/buildfail/buildfail_test.go\u001b[0m:\u001b[49m\u001b[35m6\u001b[0m: t.Foo undefined (type *testing.T has no field or method Foo)\u001b[0m\r\n"
+    ],
+    [
+      1.0,
+      "\u001b[49m\u001b[90mSTART| SampleNG\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[90mSTART|   SampleNG/SubtestNG\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[31m\u001b[1mFAIL | SampleNG (0.0s)\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[31m\u001b[1m     |   \u001b[49m\u001b[36msample_ng_test.go\u001b[0m:\u001b[49m\u001b[35m9\u001b[0m: It's not OK... :(\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[31m\u001b[1mFAIL |   SampleNG/SubtestNG (0.0s)\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[31m\u001b[1m     |       \u001b[49m\u001b[36msample_ng_test.go\u001b[0m:\u001b[49m\u001b[35m13\u001b[0m: It's also not OK... :(\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[90mSTART| SampleOK\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[90mSTART|   SampleOK/SubtestOK\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[32mPASS | SampleOK (0.0s)\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[32m     |   \u001b[49m\u001b[36msample_ok_test.go\u001b[0m:\u001b[49m\u001b[35m11\u001b[0m: It's OK!\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[32mPASS |   SampleOK/SubtestOK (0.0s)\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[32m     |       \u001b[49m\u001b[36msample_ok_test.go\u001b[0m:\u001b[49m\u001b[35m15\u001b[0m: It's also OK!\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[90mSTART| SampleSkip\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[90mSKIP | SampleSkip (0.0s)\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[90m     |   \u001b[49m\u001b[36msample_skip_test.go\u001b[0m:\u001b[49m\u001b[35m6\u001b[0m: \u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[90mSTART| SampleSkipSub\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[90mSTART|   SampleSkipSub/SubtestSkip\u001b[0m\r\n\u001b[49m\u001b[32mPASS | SampleSkipSub (0.0s)\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[90mSKIP |   SampleSkipSub/SubtestSkip (0.0s)\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[90m     |       \u001b[49m\u001b[36msample_skip_test.go\u001b[0m:\u001b[49m\u001b[35m11\u001b[0m: \u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[90mSTART| SampleTimeout\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[90mSTART|   SampleTimeout/SubtestTimeout\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[32mPASS | SampleTimeout (3.0s)\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[32mPASS |   SampleTimeout/SubtestTimeout (3.0s)\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[31m\u001b[1mFAIL | github.com/kyoh86/richgo/sample  3.0s\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[31m\u001b[1mFAIL | github.com/kyoh86/richgo/sample/buildfail [build failed]\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[49m\u001b[90mSKIP | github.com/kyoh86/richgo/sample/notest  [no test files]\u001b[0m\r\n"
+    ],
+    [
+      0.01,
+      "\u001b[1m\u001b[7m%\u001b[27m\u001b[1m\u001b[0m                                                                                                                                                                                   \r \r"
+    ],
+    [
+      0.01,
+      "\r\u001b[0m\u001b[27m\u001b[24m\u001b[J\r\n\u001b[34m$\u001b[39m "
+    ],
+    [
+      1.0,
+      "\u001b[?2004l\r\r\n"
+    ]
+  ]
+}
