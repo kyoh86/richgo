@@ -1,6 +1,8 @@
 # Rich-Go
 
-Enrich `go test` outputs with text decorations
+Rich-Go will enrich `go test` outputs with text decorations.
+
+[![asciicast](https://asciinema.org/a/99292.png)](https://asciinema.org/a/99292)
 
 # Installation
 
