@@ -16,6 +16,17 @@ go get -u github.com/kyoh86/richgo
 richgo test ./...
 ```
 
+## alias
+
+You can define alias so that `go test` prints rich outputs:
+
+* bash: `~/.bashrc`
+* zsh: `~/.zshrc`
+
+```
+alias go=richgo
+```
+
 ## Configure
 
 ### Configuration file paths
@@ -102,29 +113,29 @@ removals:
 
 Rich-Go separate the output-lines in following categories.
 
-* Build
+* Build:  
   When the Go fails to build, it prints errors like this:
 
   <pre><code># github.com/kyoh86/richgo/sample/buildfail
   sample/buildfail/buildfail_test.go:6: t.Foo undefined (type testing.T has no field or method Foo)</code></pre>
 
-* Start
+* Start:  
   In the top of test, Go prints that name like this:
 
   <pre><code>=== RUN   TestSampleOK/SubtestOK</code></pre>
 
-* Pass
+* Pass:  
   When a test is successed, Go prints that name like this:
 
   <pre><code>    ---PASS: TestSampleOK/SubtestOK</code></pre>
 
-* Fail
+* Fail:  
   When a test is failed, Go prints that name like this:
 
   <pre><code>--- FAIL: TestSampleNG (0.00s)
   sample_ng_test.go:9: It's not OK... :(</code></pre>
 
-* Skip
+* Skip:  
   If there is no test files in directory or a test is skipped, Go prints that path or the name like this:
 
   <pre><code>--- SKIP: TestSampleSkip (0.00s)
@@ -135,21 +146,21 @@ Each categories can be styled seperately.
 
 ### Label types
 
-* Long
+* Long:
   * Build: "BUILD"
   * Start: "START"
   * Pass: "PASS"
   * Fail: "FAIL"
   * Skip: "SKIP"
 
-* Short
+* Short:
   * Build: "!!"
   * Start: ">"
   * Pass: "o"
   * Fail: "x"
   * Skip: "-"
 
-* None
+* None:
   Rich-Go will never output labels.
 
 ### Default
