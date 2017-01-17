@@ -40,6 +40,20 @@ func init() {
 				Name: LightBlack,
 			},
 		},
+		CoverThreshold: ptr.Int(50),
+		CoveredStyle: &Style{
+			Foreground: &Color{
+				Type: ColorTypeName,
+				Name: Green,
+			},
+		},
+		UncoveredStyle: &Style{
+			Bold: ptr.Bool(true),
+			Foreground: &Color{
+				Type: ColorTypeName,
+				Name: Yellow,
+			},
+		},
 		FileStyle: &Style{
 			Foreground: &Color{
 				Type: ColorTypeName,

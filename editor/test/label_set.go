@@ -12,13 +12,14 @@ type labelSet struct {
 	pass   string
 	fail   string
 	skip   string
+	cover  string
 	anonym string
 }
 
 var labelSets = map[config.LabelType]labelSet{
-	config.LabelTypeLong:  newLabelSet("| ", "BUILD", "START", "PASS", "FAIL", "SKIP"),
-	config.LabelTypeShort: newLabelSet(" ", "!!", ">", "o", "x", "-"),
-	config.LabelTypeNone:  newLabelSet("", "", "", "", "", ""),
+	config.LabelTypeLong:  newLabelSet("| ", "BUILD", "START", "PASS", "FAIL", "SKIP", "COVER"),
+	config.LabelTypeShort: newLabelSet(" ", "!!", ">", "o", "x", "-", "%"),
+	config.LabelTypeNone:  newLabelSet("", "", "", "", "", "", ""),
 }
 
 func labels() labelSet {
@@ -35,13 +36,14 @@ func maxInt(numbers ...int) int {
 	return m
 }
 
-func newLabelSet(suffix, build, start, pass, fail, skip string) labelSet {
+func newLabelSet(suffix, build, start, pass, fail, skip, cover string) labelSet {
 	max := maxInt(
 		len(build),
 		len(start),
 		len(pass),
 		len(fail),
 		len(skip),
+		len(cover),
 	)
 
 	anonym := strings.Repeat(" ", max)
@@ -51,6 +53,7 @@ func newLabelSet(suffix, build, start, pass, fail, skip string) labelSet {
 		pass:   string((pass + anonym)[:max]) + suffix,
 		fail:   string((fail + anonym)[:max]) + suffix,
 		skip:   string((skip + anonym)[:max]) + suffix,
+		cover:  string((cover + anonym)[:max]) + suffix,
 		anonym: anonym + suffix,
 	}
 }
@@ -69,6 +72,9 @@ func (s labelSet) Fail() string {
 }
 func (s labelSet) Skip() string {
 	return s.skip
+}
+func (s labelSet) Cover() string {
+	return s.cover
 }
 func (s labelSet) Anonym() string {
 	return s.anonym

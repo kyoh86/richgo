@@ -1,9 +1,11 @@
 package test
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/kyoh86/richgo/config"
@@ -39,9 +41,11 @@ var (
 	passlonely = regexp.MustCompile(`(?m)^PASS$`)
 	faillonely = regexp.MustCompile(`(?m)^FAIL$`)
 
-	okPath     = regexp.MustCompile(`(?m)^ok\s+\S+\s+[\d\.]+\w+$`)
+	okPath     = regexp.MustCompile(`(?m)^ok\s+(\S+)\s+([\d\.]+\w+)(?:  (coverage: \d+\.\d+% of statements))?$`)
 	failPath   = regexp.MustCompile(`(?m)^FAIL\s+\S+\s+(?:[\d\.]+\w+|\[build failed\])$`)
 	notestPath = regexp.MustCompile(`(?m)^\?\s+\S+\s+\[no test files\]$`)
+
+	coverage = regexp.MustCompile(`(?m)^coverage: ((\d+)\.\d)+% of statements?$`)
 
 	filename   = regexp.MustCompile(`(?m)([^\s:]+\.go):(\d+)`)
 	emptyline  = regexp.MustCompile(`(?m)^\s*\r?\n`)
@@ -123,10 +127,15 @@ func (e *test) Edit(line string) (string, error) {
 		editor.RegexRepl{
 			Exp: okPath,
 			Func: func(s string) string {
-				s = strings.TrimLeft(strings.TrimPrefix(strings.TrimLeft(s, " \t"), `ok`), " \t")
+				matches := okPath.FindStringSubmatch(s)
 				processed = true
 				style = config.C.PassStyle
-				return style.Apply(labels().Pass() + s)
+
+				ret := style.Apply(labels().Pass() + strings.Join(matches[1:3], " "))
+				if len(matches) == 4 {
+					ret += "\n" + matches[3]
+				}
+				return ret
 			},
 		},
 		editor.RegexRepl{
@@ -145,6 +154,24 @@ func (e *test) Edit(line string) (string, error) {
 				processed = true
 				style = config.C.SkipStyle
 				return style.Apply(labels().Skip() + s)
+			},
+		},
+
+		editor.RegexRepl{
+			Exp: coverage,
+			Func: func(s string) string {
+				matches := coverage.FindStringSubmatch(s)
+				fill, err := strconv.Atoi(matches[2])
+				if err != nil {
+					panic(err)
+				}
+				s = fmt.Sprintf("%s%% [%s%s]", matches[1], strings.Repeat("#", fill/10), strings.Repeat("_", 10-fill/10))
+				coverStyle := config.C.CoveredStyle
+				if fill < *config.C.CoverThreshold {
+					coverStyle = config.C.UncoveredStyle
+				}
+				processed = true
+				return coverStyle.Apply(labels().Cover() + s)
 			},
 		},
 
