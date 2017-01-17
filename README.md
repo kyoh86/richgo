@@ -104,6 +104,17 @@ fileStyle:
 lineStyle:
   # Same format as `buildStyle`
 
+# A threashold of the coverage
+coverThreshold: (0-100)
+
+# Style of the "Cover" lines with the coverage that is higher than coverThreshold.
+coveredStyle:
+  # Same format as `buildStyle`
+
+# Style of the "Cover" lines with the coverage that is lower than coverThreshold.
+uncoveredStyle:
+  # Same format as `buildStyle`
+
 # If you want to delete lines, write the regular expressions.
 removals:
   - (regexp)
@@ -142,6 +153,15 @@ Rich-Go separate the output-lines in following categories.
   sample_skip_test.go:6:
 ?     github.com/kyoh86/richgo/sample/notest  [no test files]</code></pre>
 
+* Cover:  
+  If the coverage analysis is enabled, Go prints the coverage like this:
+
+  <pre><code>=== RUN   TestCover05
+--- PASS: TestCover05 (0.00s)
+PASS
+coverage: 50.0% of statements
+ok  	github.com/kyoh86/richgo/sample/cover05	0.012s	coverage: 50.0% of statements</code></pre>
+
 Each categories can be styled seperately.
 
 ### Label types
@@ -152,6 +172,7 @@ Each categories can be styled seperately.
   * Pass: "PASS"
   * Fail: "FAIL"
   * Skip: "SKIP"
+  * Cover: "COVER"
 
 * Short:
   * Build: "!!"
@@ -159,6 +180,7 @@ Each categories can be styled seperately.
   * Pass: "o"
   * Fail: "x"
   * Skip: "-"
+  * Cover: "%"
 
 * None:
   Rich-Go will never output labels.
@@ -179,6 +201,12 @@ failStyle:
   foreground: red
 skipStyle:
   foreground: lightBlack
+coverThreshold: 50
+coveredStyle:
+  foreground: green
+uncoveredStyle:
+  bold: true
+  foreground: yellow
 fileStyle:
   foreground: cyan
 lineStyle:
