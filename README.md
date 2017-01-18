@@ -2,7 +2,7 @@
 
 Rich-Go will enrich `go test` outputs with text decorations.
 
-[![asciicast](https://asciinema.org/a/99292.png)](https://asciinema.org/a/99292)
+[![asciicast](https://asciinema.org/a/99810.png)](https://asciinema.org/a/99810)
 
 # Installation
 
