@@ -12,9 +12,33 @@ go get -u github.com/kyoh86/richgo
 
 # Usage
 
+## Basic
+
 ```sh
 richgo test ./...
 ```
+
+## In an existing pipeline
+
+If your build scripts expect to interact with the standard output format of `go
+test` (for instance, if you're using
+[go-junit-report](https://github.com/jstemmer/go-junit-report)), you'll need to
+use the `testfilter` subcommand of `richgo`.
+
+For example:
+
+```sh
+go test ./... | tee >(richgo testfilter) | go-junit-report`
+```
+
+This will "tee" the output of the standard `go test` run into a `richgo
+testfilter` process as well as passing the original output to
+`go-junit-report`.
+
+Note that at some point this recommendation may change, as the "go test" tool
+may learn how to produce a standard output format
+[golang/go#2981](https://github.com/golang/go/issues/2981) that both this tool
+and others could rely on.
 
 ## alias
 
