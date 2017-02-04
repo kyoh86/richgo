@@ -28,7 +28,7 @@ use the `testfilter` subcommand of `richgo`.
 For example:
 
 ```sh
-go test ./... | tee >(richgo testfilter) | go-junit-report`
+go test ./... | tee >(richgo testfilter) | go-junit-report
 ```
 
 This will "tee" the output of the standard `go test` run into a `richgo
