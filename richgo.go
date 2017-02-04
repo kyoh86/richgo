@@ -11,6 +11,8 @@ import (
 	"github.com/kyoh86/richgo/editor/test"
 )
 
+const testFilterCmd = "testfilter"
+
 type factoryFunc func() editor.Editor
 
 var lps = map[string]factoryFunc{
@@ -30,27 +32,25 @@ func main() {
 	case 1:
 		cmd = exec.Command("go")
 	default:
-		cmd = exec.Command("go", os.Args[1:]...)
-		// select a wrapper with subcommand
-		if f, ok := lps[os.Args[1]]; ok {
-			factory = f
+		// This is a bit of a special case. Somebody is already
+		// running `go test` for us, and just wants us to prettify the
+		// output.
+		if os.Args[1] == testFilterCmd {
+			cmd = exec.Command("cat", "-")
+			factory = test.New
+		} else {
+			cmd = exec.Command("go", os.Args[1:]...)
+			// select a wrapper with subcommand
+			if f, ok := lps[os.Args[1]]; ok {
+				factory = f
+			}
 		}
 	}
 
-	var stderr io.WriteCloser
-	if editor.Formattable(os.Stderr) {
-		stderr = editor.Stream(os.Stderr, factory())
-	} else {
-		stderr = editor.Stream(os.Stderr, editor.Parrot())
-	}
+	stderr := formatWriteCloser(os.Stderr, factory)
 	defer stderr.Close()
 
-	var stdout io.WriteCloser
-	if editor.Formattable(os.Stdout) {
-		stdout = editor.Stream(os.Stdout, factory())
-	} else {
-		stdout = editor.Stream(os.Stdout, editor.Parrot())
-	}
+	stdout := formatWriteCloser(os.Stdout, factory)
 	defer stdout.Close()
 
 	cmd.Stderr = stderr
@@ -69,4 +69,11 @@ func main() {
 			panic(err)
 		}
 	}
+}
+
+func formatWriteCloser(wc io.WriteCloser, factory factoryFunc) io.WriteCloser {
+	if editor.Formattable(os.Stderr) {
+		return editor.Stream(wc, factory())
+	}
+	return editor.Stream(wc, editor.Parrot())
 }
