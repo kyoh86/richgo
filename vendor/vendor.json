@@ -3,12 +3,6 @@
 	"ignore": "test",
 	"package": [
 		{
-			"checksumSHA1": "sxluRJHmkjYbZbKN2Ol9V86quHU=",
-			"path": "github.com/go-yaml/yaml",
-			"revision": "bec87e4332aede01fb63a4ab299d8af28480cd96",
-			"revisionTime": "2014-09-22T21:32:25Z"
-		},
-		{
 			"checksumSHA1": "xZuhljnmBysJPta/lMyYmJdujCg=",
 			"path": "github.com/mattn/go-isatty",
 			"revision": "30a891c33c7cde7b02a981314b4228ec99380cca",
