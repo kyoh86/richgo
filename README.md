@@ -237,6 +237,20 @@ lineStyle:
   foreground: magenta
 ```
 
+## Overriding colorization detection
+
+By default, `richgo` determines whether or not to colorize its output based
+on whether it's connected to a TTY or not. This works for most use cases, but
+may not behave as expected if you use `richgo` in a pipeline of commands, where
+STDOUT is being piped to another command.
+
+To force colorization, add `RICHGO_FORCE_COLOR=1` to the environment you're
+running in. For example:
+
+```sh
+RICHGO_FORCE_COLOR=1 richgo test ./... | tee test.log
+```
+
 # License
 
 [The Unlicense](http://unlicense.org)
