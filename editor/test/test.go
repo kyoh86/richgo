@@ -35,9 +35,9 @@ type test struct {
 var (
 	tab        = regexp.MustCompile(`\t`)
 	runhead    = regexp.MustCompile(`(?m)^=== RUN   Test.*`)
-	passtail   = regexp.MustCompile(`(?m)^\s*--- PASS: Test.*`)
-	skiptail   = regexp.MustCompile(`(?m)^\s*--- SKIP: Test.*`)
-	failtail   = regexp.MustCompile(`(?m)^\s*--- FAIL: Test.*`)
+	passtail   = regexp.MustCompile(`(?m)^(\s*)--- PASS: Test`)
+	skiptail   = regexp.MustCompile(`(?m)^(\s*)--- SKIP: Test`)
+	failtail   = regexp.MustCompile(`(?m)^(\s*)--- FAIL: Test`)
 	passlonely = regexp.MustCompile(`(?m)^PASS$`)
 	faillonely = regexp.MustCompile(`(?m)^FAIL$`)
 
@@ -59,10 +59,6 @@ func (e *test) Edit(line string) (string, error) {
 	var style *config.Style
 	edited := editor.Replaces(line,
 		editor.RegexRepl{
-			Exp:  tab,
-			Repl: "  ",
-		},
-		editor.RegexRepl{
 			Exp: importpath,
 			Func: func(s string) string {
 				s = strings.TrimPrefix(s, `# `)
@@ -83,7 +79,7 @@ func (e *test) Edit(line string) (string, error) {
 		editor.RegexRepl{
 			Exp: runhead,
 			Func: func(s string) string {
-				s = strings.TrimPrefix(strings.TrimLeft(s, " \t"), `=== RUN   Test`)
+				s = strings.TrimPrefix(s, `=== RUN   Test`)
 				floors := strings.Split(s, `/`)
 				processed = true
 
@@ -96,7 +92,7 @@ func (e *test) Edit(line string) (string, error) {
 		editor.RegexRepl{
 			Exp: passtail,
 			Func: func(s string) string {
-				s = strings.TrimPrefix(strings.TrimLeft(s, " \t"), `--- PASS: Test`)
+				s = passtail.ReplaceAllString(s, "$1")
 				floors := strings.Split(s, `/`)
 				processed = true
 				style = config.C.PassStyle
@@ -106,7 +102,7 @@ func (e *test) Edit(line string) (string, error) {
 		editor.RegexRepl{
 			Exp: failtail,
 			Func: func(s string) string {
-				s = strings.TrimPrefix(strings.TrimLeft(s, " \t"), `--- FAIL: Test`)
+				s = passtail.ReplaceAllString(s, "$1")
 				floors := strings.Split(s, `/`)
 				processed = true
 				style = config.C.FailStyle
@@ -116,7 +112,7 @@ func (e *test) Edit(line string) (string, error) {
 		editor.RegexRepl{
 			Exp: skiptail,
 			Func: func(s string) string {
-				s = strings.TrimPrefix(strings.TrimLeft(s, " \t"), `--- SKIP: Test`)
+				s = passtail.ReplaceAllString(s, "$1")
 				floors := strings.Split(s, `/`)
 				processed = true
 				style = config.C.SkipStyle
@@ -141,7 +137,7 @@ func (e *test) Edit(line string) (string, error) {
 		editor.RegexRepl{
 			Exp: failPath,
 			Func: func(s string) string {
-				s = strings.TrimLeft(strings.TrimPrefix(strings.TrimLeft(s, " \t"), `FAIL`), " \t")
+				s = strings.TrimPrefix(strings.TrimLeft(s, " \t"), `FAIL`)
 				processed = true
 				style = config.C.FailStyle
 				return style.Apply(labels().Fail() + s)
