@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -62,6 +63,7 @@ func Load() {
 			continue
 		}
 		if err := yaml.Unmarshal(data, &loaded); err != nil {
+			fmt.Println("error unmarshalling yaml from", p, ": ", err)
 			continue
 		}
 		c = concatConfig(&loaded, c)
