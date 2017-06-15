@@ -12,6 +12,7 @@ import (
 )
 
 const testFilterCmd = "testfilter"
+const testCmd = "test"
 
 type factoryFunc func() editor.Editor
 
@@ -24,6 +25,7 @@ func main() {
 
 	var cmd *exec.Cmd
 	var factory factoryFunc = editor.Parrot
+	var callTest bool
 
 	// without arguments
 	switch len(os.Args) {
@@ -35,10 +37,14 @@ func main() {
 		// This is a bit of a special case. Somebody is already
 		// running `go test` for us, and just wants us to prettify the
 		// output.
-		if os.Args[1] == testFilterCmd {
+		switch os.Args[1] {
+		case testFilterCmd:
 			cmd = exec.Command("cat", "-")
 			factory = test.New
-		} else {
+		case testCmd:
+			callTest = true
+			fallthrough
+		default:
 			cmd = exec.Command("go", os.Args[1:]...)
 			// select a wrapper with subcommand
 			if f, ok := lps[os.Args[1]]; ok {
@@ -47,12 +53,15 @@ func main() {
 		}
 	}
 
-	stderr := formatWriteCloser(os.Stderr, factory)
-	defer stderr.Close()
+	stderr := io.WriteCloser(os.Stderr)
+	stdout := io.WriteCloser(os.Stdout)
+	if callTest {
+		stderr = formatWriteCloser(os.Stderr, factory)
+		defer stderr.Close()
 
-	stdout := formatWriteCloser(os.Stdout, factory)
-	defer stdout.Close()
-
+		stdout = formatWriteCloser(os.Stdout, factory)
+		defer stdout.Close()
+	}
 	cmd.Stderr = stderr
 	cmd.Stdout = stdout
 	cmd.Stdin = os.Stdin
