@@ -1,0 +1,40 @@
+project_name: richgo
+release:
+  github:
+    owner: kyoh86
+    name: richgo
+brew:
+  install: bin.install "richgo"
+  github:
+    owner: kyoh86
+    name: homebrew-tap
+  folder: Formula
+  homepage: https://github.com/kyoh86/richgo
+  description: Checks for unpinned variables in go programs.
+builds:
+- goos:
+  - linux
+  - darwin
+  goarch:
+  - amd64
+  - "386"
+  goarm:
+  - "6"
+  main: .
+  ldflags: -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
+  binary: richgo
+archive:
+  format: tar.gz
+  name_template: '{{ .Binary }}_{{.Version}}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{
+    .Arm }}{{ end }}'
+  files:
+  - licence*
+  - LICENCE*
+  - license*
+  - LICENSE*
+  - readme*
+  - README*
+  - changelog*
+  - CHANGELOG*
+snapshot:
+  name_template: SNAPSHOT-{{ .Commit }}

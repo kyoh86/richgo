@@ -6,8 +6,17 @@ Rich-Go will enrich `go test` outputs with text decorations.
 
 # Installation
 
+(go get):
+
 ```
 go get -u github.com/kyoh86/richgo
+```
+
+(homebrew):
+
+```
+brew tap kyoh86/tap
+brew install richgo
 ```
 
 # Usage
