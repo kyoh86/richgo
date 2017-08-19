@@ -112,7 +112,7 @@ func (e *test) Edit(line string) (string, error) {
 		editor.RegexRepl{
 			Exp: skiptail,
 			Func: func(s string) string {
-				s = passtail.ReplaceAllString(s, "$1")
+				s = skiptail.ReplaceAllString(s, "$1")
 				floors := strings.Split(s, `/`)
 				processed = true
 				style = config.C.SkipStyle
