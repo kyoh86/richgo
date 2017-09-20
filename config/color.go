@@ -22,6 +22,11 @@ type Color struct {
 	Name ColorName
 }
 
+// MarshalYAML implements Marshaler
+func (c Color) MarshalYAML() ([]byte, error) {
+	return c.MarshalJSON()
+}
+
 // MarshalJSON implements Marshaler
 func (c Color) MarshalJSON() ([]byte, error) {
 	switch c.Type {
@@ -39,6 +44,15 @@ var (
 	regexpRGB = regexp.MustCompile(`(?mi)^rgb\s*\((0x[[:xdigit:]]{2}|%d{0,3}),\s*(0x[[:xdigit:]]{2}|%d{0,3}),\s*(0x[[:xdigit:]]{2}|%d{0,3})\)$`)
 )
 
+// UnmarshalYAML implements Unmarshaler
+func (c *Color) UnmarshalYAML(unmarshal func(interface{}) error) error {
+	var s string
+	if err := unmarshal(&s); err != nil {
+		return err
+	}
+	return c.UnmarshalJSON([]byte(s))
+}
+
 // UnmarshalJSON implements Unmarshaler
 func (c *Color) UnmarshalJSON(raw []byte) error {
 	var (
@@ -49,13 +63,13 @@ func (c *Color) UnmarshalJSON(raw []byte) error {
 	)
 
 	str := string(raw)
-	if _, err := fmt.Sscanf(str, "%d", &value8); err != nil {
+	if n, err := fmt.Sscanf(str, "%d", &value8); err != nil && n == 1 {
 		c.Type = ColorType8Bit
 		c.Value8 = value8
-	} else if _, err := fmt.Sscanf(str, "0x%x", &value8); err != nil {
+	} else if n, err := fmt.Sscanf(str, "%#x", &value8); err != nil && n == 1 {
 		c.Type = ColorType8Bit
 		c.Value8 = value8
-	} else if _, err := fmt.Sscanf(str, "#%x%x%x", &valueR, &valueG, &valueB); err != nil {
+	} else if n, err := fmt.Sscanf(str, "#%x%x%x", &valueR, &valueG, &valueB); err != nil && n == 3 {
 		c.Type = ColorType24Bit
 		c.ValueR = valueR
 		c.ValueG = valueG
