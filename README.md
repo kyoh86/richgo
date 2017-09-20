@@ -260,6 +260,18 @@ running in. For example:
 RICHGO_FORCE_COLOR=1 richgo test ./... | tee test.log
 ```
 
+## Configure to resolve a conflict with "Solarized dark" theme
+
+The bright-black is used for background color in Solarized dark theme.
+Richgo uses that color for "startStyle", so "START" lines can not be seen on the screen with Solarized dark theme.
+
+To resolve that conflict, you can set another color for "startStyle" in [.richstyle](#configuration-file-paths) like below.
+
+```
+startStyle:
+  foreground: yellow
+```
+
 # License
 
 [The Unlicense](http://unlicense.org)
