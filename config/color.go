@@ -95,6 +95,7 @@ func (c *Color) UnmarshalJSON(raw []byte) error {
 		}
 		c.ValueB = uint8(b)
 	} else {
+		c.Type = ColorTypeName
 		switch str {
 		case "default":
 			c.Name = DefaultColor
