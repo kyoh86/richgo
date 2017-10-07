@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/kyoh86/xdg"
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -41,6 +42,9 @@ func loadableSources() []string {
 	if localOnly != "1" {
 		dirs = appendIndirect(dirs, getEnvPath("GOPATH"))
 		dirs = appendIndirect(dirs, getEnvPath("GOROOT"))
+		if xdgHome := xdg.ConfigHome(); xdgHome != "" {
+			dirs = append(dirs, xdgHome)
+		}
 		dirs = appendIndirect(dirs, getEnvPath("HOME"))
 	}
 
