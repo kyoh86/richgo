@@ -2,9 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// +build !gccgo
+// +build windows
+// +build !go1.3
 
-#include "textflag.h"
+package svc
 
-TEXT ·use(SB),NOSPLIT,$0
-	RET
+// from go12.c
+func getServiceMain(r *uintptr)

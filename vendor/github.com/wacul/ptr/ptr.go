@@ -93,6 +93,16 @@ func Bool(b bool) *bool {
 	return &b
 }
 
+// True will get a pointer of the true
+func True() *bool {
+	return Bool(true)
+}
+
+// False will get a pointer of the false
+func False() *bool {
+	return Bool(false)
+}
+
 // Time will get a pointer of the time.Time
 func Time(t time.Time) *time.Time {
 	return &t
