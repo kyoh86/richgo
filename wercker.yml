@@ -2,6 +2,9 @@ box: golang
 
 build:
   steps:
+    - setup-go-workspace:
+      package-dir: github.com/kyoh86/richgo
+
     - script:
         name: test
         code: |
