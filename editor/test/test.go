@@ -33,7 +33,6 @@ type test struct {
 }
 
 var (
-	tab        = regexp.MustCompile(`\t`)
 	runhead    = regexp.MustCompile(`(?m)^=== RUN   Test.*`)
 	passtail   = regexp.MustCompile(`(?m)^(\s*)--- PASS: Test`)
 	skiptail   = regexp.MustCompile(`(?m)^(\s*)--- SKIP: Test`)
@@ -62,7 +61,7 @@ func (e *test) Edit(line string) (string, error) {
 			Exp: importpath,
 			Func: func(s string) string {
 				s = strings.TrimPrefix(s, `# `)
-				imported := filepath.Join(os.Getenv(`GOPATH`), `src`, string(s))
+				imported := filepath.Join(os.Getenv(`GOPATH`), `src`, s)
 				stat, err := os.Stat(imported)
 				if err != nil {
 					return s
