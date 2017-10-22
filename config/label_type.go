@@ -8,7 +8,7 @@ type LabelType string
 const (
 	// LabelTypeNone suppress line-labels
 	LabelTypeNone = LabelType("none")
-	// LabelTypeShort prints single-charactor line-label
+	// LabelTypeShort prints single-character line-label
 	LabelTypeShort = LabelType("short")
 	// LabelTypeLong prints text line-label
 	LabelTypeLong = LabelType("long")

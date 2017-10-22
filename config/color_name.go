@@ -27,3 +27,26 @@ const (
 	LightCyan    = ColorName("lightCyan")
 	LightWhite   = ColorName("lightWhite")
 )
+
+// ColorNames will get variations of the colors.
+func ColorNames() []ColorName {
+	return []ColorName{
+		DefaultColor,
+		Black,
+		Red,
+		Green,
+		Yellow,
+		Blue,
+		Magenta,
+		Cyan,
+		White,
+		LightBlack,
+		LightRed,
+		LightGreen,
+		LightYellow,
+		LightBlue,
+		LightMagenta,
+		LightCyan,
+		LightWhite,
+	}
+}

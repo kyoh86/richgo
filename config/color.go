@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
 	"strconv"
@@ -40,10 +41,6 @@ func (c Color) MarshalJSON() ([]byte, error) {
 	return nil, fmt.Errorf("invalid color type %s", c.Type)
 }
 
-var (
-	regexpRGB = regexp.MustCompile(`(?mi)^rgb\s*\((0x[[:xdigit:]]{2}|%d{0,3}),\s*(0x[[:xdigit:]]{2}|%d{0,3}),\s*(0x[[:xdigit:]]{2}|%d{0,3})\)$`)
-)
-
 // UnmarshalYAML implements Unmarshaler
 func (c *Color) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	var s string
@@ -53,91 +50,96 @@ func (c *Color) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	return c.UnmarshalJSON([]byte(s))
 }
 
-// UnmarshalJSON implements Unmarshaler
-func (c *Color) UnmarshalJSON(raw []byte) error {
+var errInvalidFormat = errors.New("invalid format")
+
+func (c *Color) unmarshalAs8Bit(str string) error {
+	var value8 uint8
+	if n, err := fmt.Sscanf(str, "%d", &value8); err != nil || n != 1 {
+		return errInvalidFormat
+	}
+	c.Type = ColorType8Bit
+	c.Value8 = value8
+	return nil
+}
+
+func (c *Color) unmarshalAs8BitHex(str string) error {
+	var value8 uint8
+	if n, err := fmt.Sscanf(str, "%#x", &value8); err != nil || n != 1 {
+		return errInvalidFormat
+	}
+	c.Type = ColorType8Bit
+	c.Value8 = value8
+	return nil
+}
+
+func (c *Color) unmarshalAs24BitRGB(str string) error {
 	var (
-		value8 uint8
 		valueR uint8
 		valueG uint8
 		valueB uint8
 	)
+	if n, err := fmt.Sscanf(str, "#%02x%02x%02x", &valueR, &valueG, &valueB); err != nil || n != 3 {
+		return errInvalidFormat
+	}
+	c.Type = ColorType24Bit
+	c.ValueR = valueR
+	c.ValueG = valueG
+	c.ValueB = valueB
+	return nil
+}
 
+var (
+	regexpRGB = regexp.MustCompile(`(?mi)^rgb\s*\((0x[[:xdigit:]]{2}|\d{0,3}),\s*(0x[[:xdigit:]]{2}|\d{0,3}),\s*(0x[[:xdigit:]]{2}|\d{0,3})\)$`)
+)
+
+func (c *Color) unmarshalAsRGBFunc(str string) error {
+	match := regexpRGB.FindStringSubmatch(str)
+	if len(match) != 3 {
+		return errInvalidFormat
+	}
+	r, err := atoi(match[0])
+	if err != nil {
+		return errInvalidFormat
+	}
+	g, err := atoi(match[1])
+	if err != nil {
+		return errInvalidFormat
+	}
+	b, err := atoi(match[2])
+	if err != nil {
+		return errInvalidFormat
+	}
+
+	c.Type = ColorType24Bit
+	c.ValueR = uint8(r)
+	c.ValueG = uint8(g)
+	c.ValueB = uint8(b)
+	return nil
+}
+
+// UnmarshalJSON implements Unmarshaler
+func (c *Color) UnmarshalJSON(raw []byte) error {
 	str := string(raw)
-	if n, err := fmt.Sscanf(str, "%d", &value8); err != nil && n == 1 {
-		c.Type = ColorType8Bit
-		c.Value8 = value8
-	} else if n, err := fmt.Sscanf(str, "%#x", &value8); err != nil && n == 1 {
-		c.Type = ColorType8Bit
-		c.Value8 = value8
-	} else if n, err := fmt.Sscanf(str, "#%x%x%x", &valueR, &valueG, &valueB); err != nil && n == 3 {
-		c.Type = ColorType24Bit
-		c.ValueR = valueR
-		c.ValueG = valueG
-		c.ValueB = valueB
-	} else if match := regexpRGB.FindStringSubmatch(str); len(match) > 0 {
-		c.Type = ColorType24Bit
-		if len(match) != 3 {
-			return fmt.Errorf("invalid RGB format : %s", str)
-		}
-		r, err := atoi(match[0])
-		if err != nil {
-			return fmt.Errorf("invalid RGB format in Red : %s", match[0])
-		}
-		c.ValueR = uint8(r)
-		g, err := atoi(match[1])
-		if err != nil {
-			return fmt.Errorf("invalid RGB format in Green : %s", match[1])
-		}
-		c.ValueG = uint8(g)
-		b, err := atoi(match[2])
-		if err != nil {
-			return fmt.Errorf("invalid RGB format in Blue : %s", match[2])
-		}
-		c.ValueB = uint8(b)
-	} else {
-		c.Type = ColorTypeName
-		switch str {
-		case "default":
-			c.Name = DefaultColor
-
-		case "black":
-			c.Name = Black
-		case "red":
-			c.Name = Red
-		case "green":
-			c.Name = Green
-		case "yellow":
-			c.Name = Yellow
-		case "blue":
-			c.Name = Blue
-		case "magenta":
-			c.Name = Magenta
-		case "cyan":
-			c.Name = Cyan
-		case "white":
-			c.Name = White
-
-		case "lightBlack":
-			c.Name = LightBlack
-		case "lightRed":
-			c.Name = LightRed
-		case "lightGreen":
-			c.Name = LightGreen
-		case "lightYellow":
-			c.Name = LightYellow
-		case "lightBlue":
-			c.Name = LightBlue
-		case "lightMagenta":
-			c.Name = LightMagenta
-		case "lightCyan":
-			c.Name = LightCyan
-		case "lightWhite":
-			c.Name = LightWhite
-		default:
-			return fmt.Errorf("invalid color name : %s", str)
+	if err := c.unmarshalAs8Bit(str); err == nil {
+		return nil
+	}
+	if err := c.unmarshalAs8BitHex(str); err == nil {
+		return nil
+	}
+	if err := c.unmarshalAs24BitRGB(str); err == nil {
+		return nil
+	}
+	if err := c.unmarshalAsRGBFunc(str); err == nil {
+		return nil
+	}
+	for _, cn := range ColorNames() {
+		if cn.String() == str {
+			c.Type = ColorTypeName
+			c.Name = cn
+			return nil
 		}
 	}
-	return nil
+	return errInvalidFormat
 }
 
 func atoi(s string) (uint64, error) {
@@ -164,44 +166,32 @@ func actualColor(c *Color) *Color {
 	return c
 }
 
+var backColors = map[ColorName]aec.ANSI{
+	Black:        aec.BlackB,
+	Red:          aec.RedB,
+	Green:        aec.GreenB,
+	Yellow:       aec.YellowB,
+	Blue:         aec.BlueB,
+	Magenta:      aec.MagentaB,
+	Cyan:         aec.CyanB,
+	White:        aec.WhiteB,
+	LightBlack:   aec.LightBlackB,
+	LightRed:     aec.LightRedB,
+	LightGreen:   aec.LightGreenB,
+	LightYellow:  aec.LightYellowB,
+	LightBlue:    aec.LightBlueB,
+	LightMagenta: aec.LightMagentaB,
+	LightCyan:    aec.LightCyanB,
+	LightWhite:   aec.LightWhiteB,
+}
+
 // B gets background ANSI color
 func (c *Color) B() aec.ANSI {
 	switch c.Type {
 	case ColorTypeName:
-		switch c.Name {
-		case Black:
-			return aec.BlackB
-		case Red:
-			return aec.RedB
-		case Green:
-			return aec.GreenB
-		case Yellow:
-			return aec.YellowB
-		case Blue:
-			return aec.BlueB
-		case Magenta:
-			return aec.MagentaB
-		case Cyan:
-			return aec.CyanB
-		case White:
-			return aec.WhiteB
-
-		case LightBlack:
-			return aec.LightBlackB
-		case LightRed:
-			return aec.LightRedB
-		case LightGreen:
-			return aec.LightGreenB
-		case LightYellow:
-			return aec.LightYellowB
-		case LightBlue:
-			return aec.LightBlueB
-		case LightMagenta:
-			return aec.LightMagentaB
-		case LightCyan:
-			return aec.LightCyanB
-		case LightWhite:
-			return aec.LightWhiteB
+		b, ok := backColors[c.Name]
+		if ok {
+			return b
 		}
 	case ColorType8Bit:
 		return aec.Color8BitB(aec.RGB8Bit(c.Value8))
@@ -211,44 +201,32 @@ func (c *Color) B() aec.ANSI {
 	return aec.DefaultB
 }
 
+var frontColors = map[ColorName]aec.ANSI{
+	Black:        aec.BlackF,
+	Red:          aec.RedF,
+	Green:        aec.GreenF,
+	Yellow:       aec.YellowF,
+	Blue:         aec.BlueF,
+	Magenta:      aec.MagentaF,
+	Cyan:         aec.CyanF,
+	White:        aec.WhiteF,
+	LightBlack:   aec.LightBlackF,
+	LightRed:     aec.LightRedF,
+	LightGreen:   aec.LightGreenF,
+	LightYellow:  aec.LightYellowF,
+	LightBlue:    aec.LightBlueF,
+	LightMagenta: aec.LightMagentaF,
+	LightCyan:    aec.LightCyanF,
+	LightWhite:   aec.LightWhiteF,
+}
+
 // F gets foreground ANSI color
 func (c *Color) F() aec.ANSI {
 	switch c.Type {
 	case ColorTypeName:
-		switch c.Name {
-		case Black:
-			return aec.BlackF
-		case Red:
-			return aec.RedF
-		case Green:
-			return aec.GreenF
-		case Yellow:
-			return aec.YellowF
-		case Blue:
-			return aec.BlueF
-		case Magenta:
-			return aec.MagentaF
-		case Cyan:
-			return aec.CyanF
-		case White:
-			return aec.WhiteF
-
-		case LightBlack:
-			return aec.LightBlackF
-		case LightRed:
-			return aec.LightRedF
-		case LightGreen:
-			return aec.LightGreenF
-		case LightYellow:
-			return aec.LightYellowF
-		case LightBlue:
-			return aec.LightBlueF
-		case LightMagenta:
-			return aec.LightMagentaF
-		case LightCyan:
-			return aec.LightCyanF
-		case LightWhite:
-			return aec.LightWhiteF
+		f, ok := frontColors[c.Name]
+		if ok {
+			return f
 		}
 	case ColorType8Bit:
 		return aec.Color8BitF(aec.RGB8Bit(c.Value8))
