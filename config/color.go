@@ -24,19 +24,27 @@ type Color struct {
 }
 
 // MarshalYAML implements Marshaler
-func (c Color) MarshalYAML() ([]byte, error) {
-	return c.MarshalJSON()
+func (c Color) MarshalYAML() (interface{}, error) {
+	switch c.Type {
+	case ColorTypeName:
+		return c.Name.String(), nil
+	case ColorType8Bit:
+		return c.Value8, nil
+	case ColorType24Bit:
+		return fmt.Sprintf(`#%x%x%x`, c.ValueR, c.ValueG, c.ValueB), nil
+	}
+	return nil, fmt.Errorf("invalid color type %s", c.Type)
 }
 
 // MarshalJSON implements Marshaler
 func (c Color) MarshalJSON() ([]byte, error) {
 	switch c.Type {
 	case ColorTypeName:
-		return []byte(c.Name.String()), nil
+		return []byte(fmt.Sprintf(`"%s"`, c.Name.String())), nil
 	case ColorType8Bit:
 		return []byte(fmt.Sprintf("%d", c.Value8)), nil
 	case ColorType24Bit:
-		return []byte(fmt.Sprintf("#%x%x%x", c.ValueR, c.ValueG, c.ValueB)), nil
+		return []byte(fmt.Sprintf(`"#%x%x%x"`, c.ValueR, c.ValueG, c.ValueB)), nil
 	}
 	return nil, fmt.Errorf("invalid color type %s", c.Type)
 }
@@ -47,69 +55,50 @@ func (c *Color) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	if err := unmarshal(&s); err != nil {
 		return err
 	}
-	return c.UnmarshalJSON([]byte(s))
+	return c.unmarshal(s, false)
 }
 
 var errInvalidFormat = errors.New("invalid format")
 
+var reg8Bit = regexp.MustCompile(`(?mi)^(\d{1,3})$`)
+
 func (c *Color) unmarshalAs8Bit(str string) error {
-	var value8 uint8
-	if n, err := fmt.Sscanf(str, "%d", &value8); err != nil || n != 1 {
+	match := reg8Bit.FindStringSubmatch(str)
+	if len(match) != 2 {
+		return errInvalidFormat
+	}
+	v, err := atoi(match[1])
+	if err != nil {
 		return errInvalidFormat
 	}
 	c.Type = ColorType8Bit
-	c.Value8 = value8
+	c.Value8 = v
 	return nil
 }
+
+var reg8BitHex = regexp.MustCompile(`(?mi)^(0[xX][[:xdigit:]]{1,2})$`)
 
 func (c *Color) unmarshalAs8BitHex(str string) error {
-	var value8 uint8
-	if n, err := fmt.Sscanf(str, "%#x", &value8); err != nil || n != 1 {
+	match := reg8BitHex.FindStringSubmatch(str)
+	if len(match) != 2 {
 		return errInvalidFormat
 	}
+	v, _ := atoi(match[1])
 	c.Type = ColorType8Bit
-	c.Value8 = value8
+	c.Value8 = v
 	return nil
 }
+
+var regRGB = regexp.MustCompile(`(?mi)^#([[:xdigit:]]{2})([[:xdigit:]]{2})([[:xdigit:]]{2})$`)
 
 func (c *Color) unmarshalAs24BitRGB(str string) error {
-	var (
-		valueR uint8
-		valueG uint8
-		valueB uint8
-	)
-	if n, err := fmt.Sscanf(str, "#%02x%02x%02x", &valueR, &valueG, &valueB); err != nil || n != 3 {
+	match := regRGB.FindStringSubmatch(str)
+	if len(match) != 4 {
 		return errInvalidFormat
 	}
-	c.Type = ColorType24Bit
-	c.ValueR = valueR
-	c.ValueG = valueG
-	c.ValueB = valueB
-	return nil
-}
-
-var (
-	regexpRGB = regexp.MustCompile(`(?mi)^rgb\s*\((0x[[:xdigit:]]{2}|\d{0,3}),\s*(0x[[:xdigit:]]{2}|\d{0,3}),\s*(0x[[:xdigit:]]{2}|\d{0,3})\)$`)
-)
-
-func (c *Color) unmarshalAsRGBFunc(str string) error {
-	match := regexpRGB.FindStringSubmatch(str)
-	if len(match) != 3 {
-		return errInvalidFormat
-	}
-	r, err := atoi(match[0])
-	if err != nil {
-		return errInvalidFormat
-	}
-	g, err := atoi(match[1])
-	if err != nil {
-		return errInvalidFormat
-	}
-	b, err := atoi(match[2])
-	if err != nil {
-		return errInvalidFormat
-	}
-
+	r, _ := strconv.ParseUint(match[1], 16, 8)
+	g, _ := strconv.ParseUint(match[2], 16, 8)
+	b, _ := strconv.ParseUint(match[3], 16, 8)
 	c.Type = ColorType24Bit
 	c.ValueR = uint8(r)
 	c.ValueG = uint8(g)
@@ -117,9 +106,45 @@ func (c *Color) unmarshalAsRGBFunc(str string) error {
 	return nil
 }
 
+var regRGBFunc = regexp.MustCompile(`(?mi)^rgb\((0x[[:xdigit:]]{2}|\d{1,3}), *(0x[[:xdigit:]]{2}|\d{1,3}), *(0x[[:xdigit:]]{2}|\d{1,3})\)$`)
+
+func (c *Color) unmarshalAsRGBFunc(str string) error {
+	match := regRGBFunc.FindStringSubmatch(str)
+	if len(match) != 4 {
+		return errInvalidFormat
+	}
+	r, err := atoi(match[1])
+	if err != nil {
+		return errInvalidFormat
+	}
+	g, err := atoi(match[2])
+	if err != nil {
+		return errInvalidFormat
+	}
+	b, err := atoi(match[3])
+	if err != nil {
+		return errInvalidFormat
+	}
+
+	c.Type = ColorType24Bit
+	c.ValueR = r
+	c.ValueG = g
+	c.ValueB = b
+	return nil
+}
+
 // UnmarshalJSON implements Unmarshaler
 func (c *Color) UnmarshalJSON(raw []byte) error {
-	str := string(raw)
+	return c.unmarshal(string(raw), true)
+}
+
+func (c *Color) unmarshal(str string, unquote bool) error {
+	if unquote {
+		unquoted, err := strconv.Unquote(str)
+		if err == nil {
+			str = unquoted
+		}
+	}
 	if err := c.unmarshalAs8Bit(str); err == nil {
 		return nil
 	}
@@ -142,9 +167,20 @@ func (c *Color) UnmarshalJSON(raw []byte) error {
 	return errInvalidFormat
 }
 
-func atoi(s string) (uint64, error) {
+func atoi(s string) (uint8, error) {
+	i, err := atoiCore(s)
+	if err != nil {
+		return 0, err
+	}
+	return uint8(i), nil
+}
+
+func atoiCore(s string) (uint64, error) {
 	if strings.HasPrefix(s, "0x") {
 		return strconv.ParseUint(strings.TrimPrefix(s, "0x"), 16, 8)
+	}
+	if strings.HasPrefix(s, "0X") {
+		return strconv.ParseUint(strings.TrimPrefix(s, "0X"), 16, 8)
 	}
 	return strconv.ParseUint(s, 10, 8)
 }
