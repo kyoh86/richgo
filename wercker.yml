@@ -1,0 +1,16 @@
+build:
+  steps:
+    - script:
+        name: test
+        code: |
+          make test
+
+    - script:
+        name: install goveralls
+        code: |
+          go get github.com/mattn/goveralls
+
+    - script:
+        name: coverage
+        code: |
+          make cover
