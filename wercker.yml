@@ -1,3 +1,5 @@
+box: golang
+
 build:
   steps:
     - script:
