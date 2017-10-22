@@ -40,7 +40,7 @@ var (
 	passlonely = regexp.MustCompile(`(?m)^PASS$`)
 	faillonely = regexp.MustCompile(`(?m)^FAIL$`)
 
-	okPath     = regexp.MustCompile(`(?m)^ok\s+(\S+)\s+([\d\.]+\w+)(?:  (coverage: \d+\.\d+% of statements))?$`)
+	okPath     = regexp.MustCompile(`(?m)^ok\s+(\S+)\s+([\d\.]+\w+)(?:\s+(coverage:\s+\d+\.\d+% of statements)\s*)?$`)
 	failPath   = regexp.MustCompile(`(?m)^FAIL\s+\S+\s+(?:[\d\.]+\w+|\[build failed\])$`)
 	notestPath = regexp.MustCompile(`(?m)^\?\s+\S+\s+\[no test files\]$`)
 
@@ -166,7 +166,7 @@ func (e *test) Edit(line string) (string, error) {
 					coverStyle = config.C.UncoveredStyle
 				}
 				processed = true
-				return coverStyle.Apply(labels().Cover() + s)
+				return coverStyle.Apply(labels().Cover()+s) + "\n"
 			},
 		},
 
