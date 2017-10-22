@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/kyoh86/richgo)](https://goreportcard.com/report/github.com/kyoh86/richgo)[![wercker status](https://app.wercker.com/status/6007a6bc9cf775b93762f643665705f7/s/master "wercker status")](https://app.wercker.com/project/byKey/6007a6bc9cf775b93762f643665705f7)[![Coverage Status](https://coveralls.io/repos/github/kyoh86/richgo/badge.svg?branch=HEAD)](https://coveralls.io/github/kyoh86/richgo?branch=HEAD)
+
 # Rich-Go
 
 Rich-Go will enrich `go test` outputs with text decorations.
