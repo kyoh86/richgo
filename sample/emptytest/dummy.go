@@ -1,7 +1,11 @@
 package emptytest
 
-func Dummy() {
+// Dummy is dummy.
+func Dummy() int {
+	var j int
 	for k := range make([]struct{}, 3) {
-		k *= 2
+		j += k
+		j *= 2
 	}
+	return j
 }

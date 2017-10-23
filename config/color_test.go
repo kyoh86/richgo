@@ -67,15 +67,15 @@ func TestMarshalJSON(t *testing.T) {
 func TestUnmarshalYAML(t *testing.T) {
 	const yamlTemplate = "act: %s"
 	for value, exp := range map[string]Color{
-		`""`:                    Color{Type: ColorTypeNone},
-		`0x1F`:                  Color{Type: ColorType8Bit, Value8: 0x1F},
-		`"0x1F"`:                Color{Type: ColorType8Bit, Value8: 0x1F},
-		`25`:                    Color{Type: ColorType8Bit, Value8: 25},
-		`"red"`:                 Color{Type: ColorTypeName, Name: Red},
-		`red`:                   Color{Type: ColorTypeName, Name: Red},
-		`"#ffeedd"`:             Color{Type: ColorType24Bit, ValueR: 0xff, ValueG: 0xee, ValueB: 0xdd},
-		`"rGb(255, 0xEe, 127)"`: Color{Type: ColorType24Bit, ValueR: 255, ValueG: 0xEE, ValueB: 127},
-		`rGb(255, 0XEe, 127)`:   Color{Type: ColorType24Bit, ValueR: 255, ValueG: 0xEE, ValueB: 127},
+		`""`:                    {Type: ColorTypeNone},
+		`0x1F`:                  {Type: ColorType8Bit, Value8: 0x1F},
+		`"0x1F"`:                {Type: ColorType8Bit, Value8: 0x1F},
+		`25`:                    {Type: ColorType8Bit, Value8: 25},
+		`"red"`:                 {Type: ColorTypeName, Name: Red},
+		`red`:                   {Type: ColorTypeName, Name: Red},
+		`"#ffeedd"`:             {Type: ColorType24Bit, ValueR: 0xff, ValueG: 0xee, ValueB: 0xdd},
+		`"rGb(255, 0xEe, 127)"`: {Type: ColorType24Bit, ValueR: 255, ValueG: 0xEE, ValueB: 127},
+		`rGb(255, 0XEe, 127)`:   {Type: ColorType24Bit, ValueR: 255, ValueG: 0xEE, ValueB: 127},
 	} {
 		var obj struct {
 			Act Color `yaml:"act"`
@@ -122,12 +122,12 @@ func TestUnmarshalYAML(t *testing.T) {
 func TestUnmarshalJSON(t *testing.T) {
 	const jsonTemplate = `{"act":%s}`
 	for value, exp := range map[string]Color{
-		`""`:                    Color{Type: ColorTypeNone},
-		`"0x1F"`:                Color{Type: ColorType8Bit, Value8: 0x1F},
-		`25`:                    Color{Type: ColorType8Bit, Value8: 25},
-		`"red"`:                 Color{Type: ColorTypeName, Name: Red},
-		`"#ffeedd"`:             Color{Type: ColorType24Bit, ValueR: 0xff, ValueG: 0xee, ValueB: 0xdd},
-		`"rGb(255, 0xEe, 127)"`: Color{Type: ColorType24Bit, ValueR: 255, ValueG: 0xEE, ValueB: 127},
+		`""`:                    {Type: ColorTypeNone},
+		`"0x1F"`:                {Type: ColorType8Bit, Value8: 0x1F},
+		`25`:                    {Type: ColorType8Bit, Value8: 25},
+		`"red"`:                 {Type: ColorTypeName, Name: Red},
+		`"#ffeedd"`:             {Type: ColorType24Bit, ValueR: 0xff, ValueG: 0xee, ValueB: 0xdd},
+		`"rGb(255, 0xEe, 127)"`: {Type: ColorType24Bit, ValueR: 255, ValueG: 0xEE, ValueB: 127},
 	} {
 		var obj struct {
 			Act Color `json:"act"`
