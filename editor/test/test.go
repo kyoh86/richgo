@@ -32,6 +32,8 @@ type test struct {
 	additional    []editor.RegexRepl
 }
 
+const noTestPattern = `\s+\[(?:no test files|no tests to run)\]`
+
 var (
 	runhead    = regexp.MustCompile(`(?m)^=== RUN   Test.*`)
 	passtail   = regexp.MustCompile(`(?m)^(\s*)--- PASS: Test`)
@@ -40,9 +42,9 @@ var (
 	passlonely = regexp.MustCompile(`(?m)^PASS$`)
 	faillonely = regexp.MustCompile(`(?m)^FAIL$`)
 
-	okPath     = regexp.MustCompile(`(?m)^ok\s+(\S+)\s+([\d\.]+\w+)(?:\s+(coverage:\s+\d+\.\d+% of statements)\s*)?$`)
+	okPath     = regexp.MustCompile(`(?m)^ok\s+(\S+)\s+([\d\.]+\w+)(?:\s+(coverage:\s+\d+\.\d+% of statements)\s*)?(?:` + noTestPattern + `)?$`)
 	failPath   = regexp.MustCompile(`(?m)^FAIL\s+\S+\s+(?:[\d\.]+\w+|\[build failed\])$`)
-	notestPath = regexp.MustCompile(`(?m)^\?\s+\S+\s+\[no test files\]$`)
+	notestPath = regexp.MustCompile(`(?m)^\?\s+\S+` + noTestPattern + `$`)
 
 	coverage = regexp.MustCompile(`(?m)^coverage: ((\d+)\.\d)+% of statements?$`)
 
