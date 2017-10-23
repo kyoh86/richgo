@@ -1,6 +1,9 @@
 default:
 	echo use "test", "cover" or "sample"
 
+gen:
+	go-bindata -o editor/test/output.go -pkg test -prefix sample/out_ ./sample/out_*.txt
+
 test:
 	go test ./...
 
@@ -10,4 +13,4 @@ cover:
 sample:
 	sample/run.sh
 
-.PHONY: default test cover sample
+.PHONY: default test cover sample test-resource
