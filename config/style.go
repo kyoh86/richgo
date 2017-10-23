@@ -2,7 +2,6 @@ package config
 
 import (
 	"github.com/morikuni/aec"
-	"github.com/wacul/ptr"
 )
 
 // Style format the text with ANSI
@@ -41,132 +40,38 @@ type Style struct {
 	Background *Color `json:"background,omitempty" yaml:"background,omitempty"`
 }
 
-func concatStyle(base, other *Style) *Style {
-	if base == nil {
-		if other == nil {
-			return nil
-		}
-		base = &Style{}
-	}
-	if other == nil {
-		other = &Style{}
-	}
-	return &Style{
-		Hide:       concatBool(base.Hide, other.Hide),
-		Bold:       concatBool(base.Bold, other.Bold),
-		Faint:      concatBool(base.Faint, other.Faint),
-		Italic:     concatBool(base.Italic, other.Italic),
-		Underline:  concatBool(base.Underline, other.Underline),
-		BlinkSlow:  concatBool(base.BlinkSlow, other.BlinkSlow),
-		BlinkRapid: concatBool(base.BlinkRapid, other.BlinkRapid),
-		Inverse:    concatBool(base.Inverse, other.Inverse),
-		Conceal:    concatBool(base.Conceal, other.Conceal),
-		CrossOut:   concatBool(base.CrossOut, other.CrossOut),
-		Frame:      concatBool(base.Frame, other.Frame),
-		Encircle:   concatBool(base.Encircle, other.Encircle),
-		Overline:   concatBool(base.Overline, other.Overline),
-		Foreground: concatColor(base.Foreground, other.Foreground),
-		Background: concatColor(base.Background, other.Background),
-	}
-}
-
-func actualStyle(s *Style) *Style {
-	if s == nil {
-		s = &Style{}
-	}
-	return &Style{
-		Hide:       actualBool(s.Hide),
-		Bold:       actualBool(s.Bold),
-		Faint:      actualBool(s.Faint),
-		Italic:     actualBool(s.Italic),
-		Underline:  actualBool(s.Underline),
-		BlinkSlow:  actualBool(s.BlinkSlow),
-		BlinkRapid: actualBool(s.BlinkRapid),
-		Inverse:    actualBool(s.Inverse),
-		Conceal:    actualBool(s.Conceal),
-		CrossOut:   actualBool(s.CrossOut),
-		Frame:      actualBool(s.Frame),
-		Encircle:   actualBool(s.Encircle),
-		Overline:   actualBool(s.Overline),
-		Foreground: actualColor(s.Foreground),
-		Background: actualColor(s.Background),
-	}
-}
-
-func concatBool(a, b *bool) *bool {
-	if a == nil {
-		if b == nil {
-			return nil
-		}
-		f := *b
-		return &f
-	}
-	return a
-}
-
-func actualBool(b *bool) *bool {
-	if b == nil {
-		return ptr.Bool(false)
-	}
-	return b
-}
-
 // Apply style To string
 func (s *Style) Apply(str string) string {
-	if s == nil {
-		return str
-	}
-	if is(s.Hide) {
+	if *s.Hide {
 		return ""
 	}
 
-	ansi := []aec.ANSI{
-		s.Background.B(),
-		s.Foreground.F(),
+	ansi := s.Background.B()
+	ansi = ansi.With(s.Foreground.F())
+	for _, style := range []struct {
+		flag *bool
+		ansi aec.ANSI
+	}{
+		{s.Bold, aec.Bold},
+		{s.Faint, aec.Faint},
+		{s.Italic, aec.Italic},
+		{s.Underline, aec.Underline},
+		{s.BlinkSlow, aec.BlinkSlow},
+		{s.BlinkRapid, aec.BlinkRapid},
+		{s.Inverse, aec.Inverse},
+		{s.Conceal, aec.Conceal},
+		{s.CrossOut, aec.CrossOut},
+		{s.Frame, aec.Frame},
+		{s.Encircle, aec.Encircle},
+		{s.Overline, aec.Overline},
+	} {
+		if *style.flag {
+			ansi = ansi.With(style.ansi)
+		}
 	}
 
-	if is(s.Bold) {
-		ansi = append(ansi, aec.Bold)
+	if len(ansi.String()) == 0 {
+		return str
 	}
-	if is(s.Faint) {
-		ansi = append(ansi, aec.Faint)
-	}
-	if is(s.Italic) {
-		ansi = append(ansi, aec.Italic)
-	}
-	if is(s.Underline) {
-		ansi = append(ansi, aec.Underline)
-	}
-	if is(s.BlinkSlow) {
-		ansi = append(ansi, aec.BlinkSlow)
-	}
-	if is(s.BlinkRapid) {
-		ansi = append(ansi, aec.BlinkRapid)
-	}
-	if is(s.Inverse) {
-		ansi = append(ansi, aec.Inverse)
-	}
-	if is(s.Conceal) {
-		ansi = append(ansi, aec.Conceal)
-	}
-	if is(s.CrossOut) {
-		ansi = append(ansi, aec.CrossOut)
-	}
-	if is(s.Frame) {
-		ansi = append(ansi, aec.Frame)
-	}
-	if is(s.Encircle) {
-		ansi = append(ansi, aec.Encircle)
-	}
-	if is(s.Overline) {
-		ansi = append(ansi, aec.Overline)
-	}
-	return aec.Apply(str, ansi...)
-}
-
-func is(f *bool) bool {
-	if f == nil {
-		return false
-	}
-	return *f
+	return aec.Apply(str, ansi)
 }

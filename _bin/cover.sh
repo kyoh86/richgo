@@ -12,5 +12,5 @@ done
 rm -f profile.cover
 if [ -n "${COVERALLS_TOKEN}" ]; then
   goveralls -coverprofile=acc.cover -repotoken=$COVERALLS_TOKEN -service=wercker.com
+  rm -f acc.cover
 fi  
-rm -f acc.cover

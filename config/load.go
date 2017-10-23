@@ -1,8 +1,8 @@
 package config
 
 import (
-	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -27,8 +27,6 @@ var (
 	}
 	// C is global configuration
 	C Config
-
-	loaded Config
 )
 
 func loadableSources() []string {
@@ -57,17 +55,30 @@ func loadableSources() []string {
 	return paths
 }
 
+var loadForTest func(path string) ([]byte, error)
+
+func load(path string) ([]byte, error) {
+	if loadForTest != nil {
+		return loadForTest(path)
+	}
+	return ioutil.ReadFile(path)
+}
+
 // Load configurations from file
 func Load() {
 	paths := loadableSources()
 	c := &defaultConfig
 	for _, p := range paths {
-		data, err := ioutil.ReadFile(p)
+		data, err := load(p)
 		if err != nil {
+			if !os.IsNotExist(err) {
+				log.Println("error reading from", p, ": ", err)
+			}
 			continue
 		}
+		var loaded Config
 		if err := yaml.Unmarshal(data, &loaded); err != nil {
-			fmt.Println("error unmarshalling yaml from", p, ": ", err)
+			log.Println("error unmarshaling yaml from", p, ": ", err)
 			continue
 		}
 		c = concatConfig(&loaded, c)
@@ -87,8 +98,20 @@ func getEnvPath(envName string) *string {
 	if envPath == "" {
 		return nil
 	}
-	if stat, err := os.Stat(envPath); err == nil && stat.IsDir() {
+	if isDir(envPath) {
 		return &envPath
 	}
 	return nil
+}
+
+var isDirForTest func(path string) bool
+
+func isDir(path string) bool {
+	if isDirForTest != nil {
+		return isDirForTest(path)
+	}
+	if stat, err := os.Stat(path); err == nil && stat.IsDir() {
+		return true
+	}
+	return false
 }

@@ -26,6 +26,8 @@ type Color struct {
 // MarshalYAML implements Marshaler
 func (c Color) MarshalYAML() (interface{}, error) {
 	switch c.Type {
+	case ColorTypeNone:
+		return "", nil
 	case ColorTypeName:
 		return c.Name.String(), nil
 	case ColorType8Bit:
@@ -39,6 +41,8 @@ func (c Color) MarshalYAML() (interface{}, error) {
 // MarshalJSON implements Marshaler
 func (c Color) MarshalJSON() ([]byte, error) {
 	switch c.Type {
+	case ColorTypeNone:
+		return []byte(`""`), nil
 	case ColorTypeName:
 		return []byte(fmt.Sprintf(`"%s"`, c.Name.String())), nil
 	case ColorType8Bit:
@@ -145,6 +149,10 @@ func (c *Color) unmarshal(str string, unquote bool) error {
 			str = unquoted
 		}
 	}
+	if str == "" {
+		c.Type = ColorTypeNone
+		return nil
+	}
 	if err := c.unmarshalAs8Bit(str); err == nil {
 		return nil
 	}
@@ -185,23 +193,6 @@ func atoiCore(s string) (uint64, error) {
 	return strconv.ParseUint(s, 10, 8)
 }
 
-func concatColor(a, b *Color) *Color {
-	if a == nil {
-		return b
-	}
-	return a
-}
-
-func actualColor(c *Color) *Color {
-	if c == nil {
-		return &Color{
-			Type: ColorTypeName,
-			Name: DefaultColor,
-		}
-	}
-	return c
-}
-
 var backColors = map[ColorName]aec.ANSI{
 	Black:        aec.BlackB,
 	Red:          aec.RedB,
@@ -221,9 +212,17 @@ var backColors = map[ColorName]aec.ANSI{
 	LightWhite:   aec.LightWhiteB,
 }
 
+var emptyColor aec.ANSI
+
+func init() {
+	emptyColor = aec.EmptyBuilder.ANSI
+}
+
 // B gets background ANSI color
 func (c *Color) B() aec.ANSI {
 	switch c.Type {
+	case ColorTypeNone:
+		return emptyColor
 	case ColorTypeName:
 		b, ok := backColors[c.Name]
 		if ok {
@@ -234,7 +233,7 @@ func (c *Color) B() aec.ANSI {
 	case ColorType24Bit:
 		return aec.FullColorB(c.ValueR, c.ValueG, c.ValueB)
 	}
-	return aec.DefaultB
+	return emptyColor
 }
 
 var frontColors = map[ColorName]aec.ANSI{
@@ -259,6 +258,8 @@ var frontColors = map[ColorName]aec.ANSI{
 // F gets foreground ANSI color
 func (c *Color) F() aec.ANSI {
 	switch c.Type {
+	case ColorTypeNone:
+		return emptyColor
 	case ColorTypeName:
 		f, ok := frontColors[c.Name]
 		if ok {
@@ -269,5 +270,5 @@ func (c *Color) F() aec.ANSI {
 	case ColorType24Bit:
 		return aec.FullColorF(c.ValueR, c.ValueG, c.ValueB)
 	}
-	return aec.DefaultF
+	return emptyColor
 }

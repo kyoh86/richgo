@@ -52,8 +52,5 @@ func (s *stream) Write(b []byte) (int, error) {
 func (s *stream) Close() error {
 	lines := bytes.Split(s.buffer, []byte(`\n`))
 	s.buffer = nil
-	if err := s.writeLines(lines); err != nil {
-		return err
-	}
-	return nil
+	return s.writeLines(lines)
 }

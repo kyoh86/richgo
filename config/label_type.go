@@ -18,17 +18,17 @@ func (l LabelType) String() string { return string(l) }
 
 // MarshalJSON implements Marshaler
 func (l LabelType) MarshalJSON() ([]byte, error) {
-	return []byte(l.String()), nil
+	return []byte(fmt.Sprintf("%q", l)), nil
 }
 
 // UnmarshalJSON implements Unmarshaler
 func (l *LabelType) UnmarshalJSON(raw []byte) error {
 	switch str := string(raw); str {
-	case "none":
+	case `"none"`:
 		*l = LabelTypeNone
-	case "short":
+	case `"short"`:
 		*l = LabelTypeShort
-	case "long":
+	case `"long"`:
 		*l = LabelTypeLong
 	default:
 		return fmt.Errorf("invalid LabelType %s", str)
@@ -36,21 +36,11 @@ func (l *LabelType) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
-func concatLabelType(base, other *LabelType) *LabelType {
-	if base == nil {
-		if other == nil {
-			return nil
-		}
-		return other
+// LabelTypes defines the possible values of LabelType
+func LabelTypes() []LabelType {
+	return []LabelType{
+		LabelTypeNone,
+		LabelTypeShort,
+		LabelTypeLong,
 	}
-	return base
-
-}
-
-func actualLabelType(t *LabelType) *LabelType {
-	if t == nil {
-		l := LabelTypeLong
-		return &l
-	}
-	return t
 }
