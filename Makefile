@@ -1,5 +1,5 @@
 default:
-	echo use "test" or "cover"
+	echo use "test", "cover" or "sample"
 
 test:
 	go test ./...
@@ -7,4 +7,7 @@ test:
 cover:
 	_bin/cover.sh
 
-.PHONY: default test cover
+sample:
+	sample/run.sh
+
+.PHONY: default test cover sample

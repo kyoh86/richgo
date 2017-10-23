@@ -16,3 +16,5 @@ export RICHGO_LOCAL=1
 go run richgo.go ${OPTIONS}
 
 find ./sample -type f -name '*.go' -exec gsed -e 's|.*// *UNCOMMENT:|//&|' -e 's|//\(.*// *COMMENT:\)|\1|' -i {} \;
+
+git checkout sample
