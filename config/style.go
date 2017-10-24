@@ -42,7 +42,10 @@ type Style struct {
 
 // Apply style To string
 func (s *Style) Apply(str string) string {
-	if *s.Hide {
+	if s == nil {
+		return str // when a prevLineStyle is not set, editor/test/test.go calls it in nil
+	}
+	if s.Hide != nil && *s.Hide {
 		return ""
 	}
 
