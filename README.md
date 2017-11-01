@@ -265,13 +265,16 @@ RICHGO_FORCE_COLOR=1 richgo test ./... | tee test.log
 ## Configure to resolve a conflict with "Solarized dark" theme
 
 The bright-black is used for background color in Solarized dark theme.
-Richgo uses that color for "startStyle", so "START" lines can not be seen on the screen with Solarized dark theme.
+Richgo uses that color for "startStyle" and "skipStyle", so "START" and "SKIP" lines can not be seen on the screen with Solarized dark theme.
 
-To resolve that conflict, you can set another color for "startStyle" in [.richstyle](#configuration-file-paths) like below.
+To resolve that conflict, you can set another color for "startStyle" and "skipStyle" in [.richstyle](#configuration-file-paths) like below.
 
 ```
 startStyle:
   foreground: yellow
+
+skipStyle:
+  foreground: lightYellow
 ```
 
 # License
