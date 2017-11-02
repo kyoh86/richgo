@@ -14,7 +14,7 @@ func TestE2E(t *testing.T) {
 	raws := bytes.Split(MustAsset("raw.txt"), []byte("\n"))
 	exps := bytes.Split(MustAsset("colored.txt"), []byte("\n"))
 
-	config.Load()
+	config.Default()
 	editor := New()
 	var expi int
 	for _, raw := range raws {

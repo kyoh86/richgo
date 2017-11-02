@@ -86,6 +86,10 @@ func Load() {
 	C = *actualConfig(c)
 }
 
+func Default() {
+	C = *actualConfig(&defaultConfig)
+}
+
 func appendIndirect(arr []string, ptr *string) []string {
 	if ptr != nil {
 		return append(arr, *ptr)
