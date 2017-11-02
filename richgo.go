@@ -25,7 +25,7 @@ func main() {
 
 	var cmd *exec.Cmd
 	var factory factoryFunc = editor.Parrot
-	var callTest bool
+	var colorize bool
 
 	// without arguments
 	switch len(os.Args) {
@@ -39,10 +39,11 @@ func main() {
 		// output.
 		switch os.Args[1] {
 		case testFilterCmd:
+			colorize = true
 			cmd = exec.Command("cat", "-")
 			factory = test.New
 		case testCmd:
-			callTest = true
+			colorize = true
 			fallthrough
 		default:
 			cmd = exec.Command("go", os.Args[1:]...)
@@ -55,7 +56,7 @@ func main() {
 
 	stderr := io.WriteCloser(os.Stderr)
 	stdout := io.WriteCloser(os.Stdout)
-	if callTest {
+	if colorize {
 		stderr = formatWriteCloser(os.Stderr, factory)
 		defer stderr.Close()
 
