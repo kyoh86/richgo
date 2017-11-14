@@ -1,3 +1,5 @@
+// +build sample
+
 package cover05
 
 // Cover05 will be covered about 50%

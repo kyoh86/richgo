@@ -1,3 +1,5 @@
+// +build sample
+
 package sample
 
 import (
@@ -6,8 +8,6 @@ import (
 )
 
 func TestSampleOK(t *testing.T) {
-	t.Skip() //COMMENT: Comment-out this line to get sample
-
 	t.Log("It's OK!")
 
 	t.Run("SubtestOK", func(t *testing.T) {

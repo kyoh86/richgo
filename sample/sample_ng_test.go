@@ -1,10 +1,10 @@
+// +build sample
+
 package sample
 
 import "testing"
 
 func TestSampleNG(t *testing.T) {
-	t.Skip() //COMMENT: Comment-out this line to get sample
-
 	t.Fail()
 	t.Log("It's not OK... :(")
 

@@ -1,3 +1,5 @@
+// +build sample
+
 package cover05
 
 import "testing"

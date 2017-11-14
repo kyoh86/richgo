@@ -1,3 +1,5 @@
+// +build sample
+
 package coverall
 
 // CoverAll will not be covered

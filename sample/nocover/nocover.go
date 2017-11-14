@@ -1,3 +1,5 @@
+// +build sample
+
 package nocover
 
 // Nocover will not be covered

@@ -1,1 +1,3 @@
+// +build sample
+
 package notest
