@@ -1,20 +1,4 @@
 build:
-  box: golang
-  steps:
-    - setup-go-workspace:
-      package-dir: github.com/kyoh86/richgo
-
-    - script:
-        name: test
-        code: |
-          make test
-
-  after-steps:
-    - slack-notifier:
-        url: $SLACK_URL
-        channel: tests
-
-cover:
   box: kyoh86/goveralls
   steps:
     - setup-go-workspace:
@@ -23,4 +7,9 @@ cover:
     - script:
         name: coverage
         code: |
-          make cover
+          GIT_BRANCH=$WERCKER_GIT_BRANCH goveralls -race -package ./... -repotoken ${COVERALLS_TOKEN}
+
+  after-steps:
+    - slack-notifier:
+        url: $SLACK_URL
+        channel: tests
