@@ -13,4 +13,4 @@ cover:
 sample:
 	sample/run.sh
 
-.PHONY: default test cover sample test-resource
+.PHONY: default gen test cover sample
