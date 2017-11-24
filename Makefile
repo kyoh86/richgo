@@ -8,7 +8,7 @@ test:
 	go test ./...
 
 cover:
-	_bin/cover.sh
+	goveralls -race -package ./... -repotoken $(COVERALLS_TOKEN)
 
 sample:
 	sample/run.sh
