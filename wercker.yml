@@ -1,6 +1,5 @@
-box: golang
-
 build:
+  box: golang
   steps:
     - setup-go-workspace:
       package-dir: github.com/kyoh86/richgo
@@ -10,16 +9,18 @@ build:
         code: |
           make test
 
-    - script:
-        name: install goveralls
-        code: |
-          go get github.com/mattn/goveralls
+  after-steps:
+    - slack-notifier:
+        url: $SLACK_URL
+        channel: wercker
+
+cover:
+  box: kyoh86/goveralls
+  steps:
+    - setup-go-workspace:
+      package-dir: github.com/kyoh86/richgo
 
     - script:
         name: coverage
         code: |
           make cover
-  after-steps:
-    - slack-notifier:
-        url: $SLACK_URL
-        channel: wercker
