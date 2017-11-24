@@ -5,22 +5,11 @@ build:
       package-dir: github.com/kyoh86/richgo
 
     - script:
-        name: test
+        name: coverage
         code: |
-          make test
+          goveralls -race -package ./... -repotoken ${COVERALLS_TOKEN}
 
   after-steps:
     - slack-notifier:
         url: $SLACK_URL
         channel: tests
-
-cover:
-  box: kyoh86/goveralls
-  steps:
-    - setup-go-workspace:
-      package-dir: github.com/kyoh86/richgo
-
-    - script:
-        name: coverage
-        code: |
-          make cover

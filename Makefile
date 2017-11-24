@@ -1,5 +1,5 @@
 default:
-	echo use "test", "cover" or "sample"
+	echo use "gen", "test" or "sample"
 
 gen:
 	go-bindata -o editor/test/output_test.go -pkg test -prefix sample/out_ ./sample/out_*.txt
@@ -7,10 +7,7 @@ gen:
 test:
 	go test ./...
 
-cover:
-	goveralls -race -package ./... -repotoken $(COVERALLS_TOKEN)
-
 sample:
 	sample/run.sh
 
-.PHONY: default gen test cover sample
+.PHONY: default gen test sample
