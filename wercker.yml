@@ -7,7 +7,7 @@ build:
     - script:
         name: coverage
         code: |
-          goveralls -race -package ./... -repotoken ${COVERALLS_TOKEN}
+          GIT_BRANCH=$WERCKER_GIT_BRANCH goveralls -race -package ./... -repotoken ${COVERALLS_TOKEN}
 
   after-steps:
     - slack-notifier:
