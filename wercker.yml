@@ -1,5 +1,5 @@
 build:
-  box: golang
+  box: kyoh86/goveralls
   steps:
     - setup-go-workspace:
       package-dir: github.com/kyoh86/richgo
