@@ -1,0 +1,47 @@
+version: 2
+jobs:
+  build:
+    working_directory: /go/src/github.com/kyoh86/richgo
+    docker:
+      - image: kyoh86/gotest
+    steps:
+      - checkout
+      - run:
+          name: go test
+          command: "go test -race ./..."
+  cover:
+    working_directory: /go/src/github.com/kyoh86/richgo
+    docker:
+      - image: kyoh86/gotest
+    steps:
+      - checkout
+      - run:
+          name: take a coverage
+          command: "goverage -coverprofile=coverage.out ./..."
+      - run:
+          name: upload a coverage
+          command: "bash <(curl -s https://codecov.io/bash)"
+  lint:
+    working_directory: /go/src/github.com/kyoh86/richgo
+    docker:
+      - image: kyoh86/gotest
+    steps:
+      - checkout
+      - run:
+          name: search lints
+          command: "gometalinter --config /etc/gometalinter/config.json ./... > ./lints.txt || :"
+      - run:
+          name: reviewdog
+          command: "cat ./lints.txt | reviewdog -f=golint -ci=circle-ci"
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - build
+      - cover:
+          requires:
+            - build
+      - lint:
+          requires:
+            - build
