@@ -1,6 +1,7 @@
 package config
 
 import (
+	"go/build"
 	"io/ioutil"
 	"log"
 	"os"
@@ -38,7 +39,7 @@ func loadableSources() []string {
 
 	localOnly := os.Getenv(LocalOnlyEnvName)
 	if localOnly != "1" {
-		dirs = appendIndirect(dirs, getEnvPath("GOPATH"))
+		dirs = append(dirs, build.Default.GOPATH)
 		dirs = appendIndirect(dirs, getEnvPath("GOROOT"))
 		if xdgHome := xdg.ConfigHome(); xdgHome != "" {
 			dirs = append(dirs, xdgHome)

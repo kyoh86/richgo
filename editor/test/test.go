@@ -2,6 +2,7 @@ package test
 
 import (
 	"fmt"
+	"go/build"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -63,7 +64,7 @@ func (e *test) Edit(line string) (string, error) {
 			Exp: importpath,
 			Func: func(s string) string {
 				s = strings.TrimPrefix(s, `# `)
-				imported := filepath.Join(os.Getenv(`GOPATH`), `src`, s)
+				imported := filepath.Join(build.Default.GOPATH, `src`, s)
 				stat, err := os.Stat(imported)
 				if err != nil {
 					return s
