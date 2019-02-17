@@ -13,67 +13,67 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
-func TestLoadableSources(t *testing.T) {
-	t.Run("in global", func(t *testing.T) {
-		os.Setenv("HOME", "/")
-		os.Setenv("GOPATH", "/")
-		os.Setenv("GOROOT", "/foo/bar/path/not/exists")
-		os.Setenv("PWD", "/home/kyoh86/go/src/github.com/kyoh86/richgo")
-		err := os.Setenv(LocalOnlyEnvName, "0")
+func TestInGlobal(t *testing.T) {
+	os.Setenv("HOME", "/")
+	os.Setenv("GOPATH", "/")
+	os.Setenv("GOROOT", "/foo/bar/path/not/exists")
+	os.Setenv("PWD", "/home/kyoh86/go/src/github.com/kyoh86/richgo")
+	err := os.Setenv(LocalOnlyEnvName, "0")
+	if err != nil {
+		t.Errorf("failed to set env: %s", err)
+		t.FailNow()
+	}
+	sources := loadableSources()
+	if len(sources) == 0 {
+		t.Errorf("failed to get loadable sources")
+	}
+}
+
+func TestInGlobalWithNotCoveredEnv(t *testing.T) {
+	os.Clearenv()
+	os.Setenv("HOME", "/home/kyoh86")
+	os.Setenv("GOPATH", "/home/kyoh86/go")
+	os.Unsetenv("GOROOT")
+	os.Setenv("PWD", "/home/kyoh86/go/src/github.com/kyoh86/richgo")
+	isDirForTest = func(path string) bool {
+		return len(path) > 0
+	}
+	defer func() { isDirForTest = nil }()
+	err := os.Setenv(LocalOnlyEnvName, "0")
+	if err != nil {
+		t.Errorf("failed to set env: %s", err)
+		t.FailNow()
+	}
+	sources := loadableSources()
+	if len(sources) == 0 {
+		t.Errorf("failed to get loadable sources")
+	}
+}
+
+func TestInLocal(t *testing.T) {
+	err := os.Setenv(LocalOnlyEnvName, "1")
+	if err != nil {
+		t.Errorf("failed to set env: %s", err)
+		t.FailNow()
+	}
+	sources := loadableSources()
+	if len(sources) == 0 {
+		t.Errorf("failed to get loadable sources")
+	}
+	wd, err := os.Getwd()
+	if err != nil {
+		t.Errorf("failed to get working directory: %q", err)
+		t.FailNow()
+	}
+	for _, s := range sources {
+		rel, err := filepath.Rel(wd, s)
 		if err != nil {
-			t.Errorf("failed to set env: %s", err)
-			t.FailNow()
+			t.Errorf("failed to get relative path to %q from %q: %q", s, wd, err)
 		}
-		sources := loadableSources()
-		if len(sources) == 0 {
-			t.Errorf("failed to get loadable sources")
+		if strings.HasPrefix(rel, "..") {
+			t.Errorf("expect that any source will be in local, but not (%q)", s)
 		}
-	})
-	t.Run("in global with not covered env", func(t *testing.T) {
-		os.Clearenv()
-		os.Setenv("HOME", "/home/kyoh86")
-		os.Setenv("GOPATH", "/home/kyoh86/go")
-		os.Unsetenv("GOROOT")
-		os.Setenv("PWD", "/home/kyoh86/go/src/github.com/kyoh86/richgo")
-		isDirForTest = func(path string) bool {
-			return len(path) > 0
-		}
-		defer func() { isDirForTest = nil }()
-		err := os.Setenv(LocalOnlyEnvName, "0")
-		if err != nil {
-			t.Errorf("failed to set env: %s", err)
-			t.FailNow()
-		}
-		sources := loadableSources()
-		if len(sources) == 0 {
-			t.Errorf("failed to get loadable sources")
-		}
-	})
-	t.Run("in local", func(t *testing.T) {
-		err := os.Setenv(LocalOnlyEnvName, "1")
-		if err != nil {
-			t.Errorf("failed to set env: %s", err)
-			t.FailNow()
-		}
-		sources := loadableSources()
-		if len(sources) == 0 {
-			t.Errorf("failed to get loadable sources")
-		}
-		wd, err := os.Getwd()
-		if err != nil {
-			t.Errorf("failed to get working directory: %q", err)
-			t.FailNow()
-		}
-		for _, s := range sources {
-			rel, err := filepath.Rel(wd, s)
-			if err != nil {
-				t.Errorf("failed to get relative path to %q from %q: %q", s, wd, err)
-			}
-			if strings.HasPrefix(rel, "..") {
-				t.Errorf("expect that any source will be in local, but not (%q)", s)
-			}
-		}
-	})
+	}
 }
 
 func TestLoad(t *testing.T) {
