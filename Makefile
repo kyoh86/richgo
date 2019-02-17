@@ -8,16 +8,13 @@ gen:
 	gofmt -w editor/test/output_test.go
 
 test:
-	go test ./...
+	go test -v -race ./...
 
 lint:
 	gometalinter ./...
 
 sample:
 	sample/run.sh
-
-vendor:
-	dep ensure
 
 install:
 	go install ./...
