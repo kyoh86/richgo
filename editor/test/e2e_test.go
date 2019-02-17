@@ -2,6 +2,7 @@ package test
 
 import (
 	"bytes"
+	"io/ioutil"
 	"strings"
 	"testing"
 
@@ -10,9 +11,20 @@ import (
 )
 
 func TestE2E(t *testing.T) {
-	// t.Fatal("not implemented")
-	raws := bytes.Split(MustAsset("raw.txt"), []byte("\n"))
-	exps := bytes.Split(MustAsset("colored.txt"), []byte("\n"))
+	mustAsset := func(name string) []byte {
+		t.Helper()
+		file, err := Assets.File(name)
+		if err != nil {
+			t.Fatal(err)
+		}
+		buf, err := ioutil.ReadAll(file)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return buf
+	}
+	raws := bytes.Split(mustAsset("/sample/out_raw.txt"), []byte("\n"))
+	exps := bytes.Split(mustAsset("/sample/out_colored.txt"), []byte("\n"))
 
 	config.Default()
 	editor := New()

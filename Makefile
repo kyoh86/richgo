@@ -4,7 +4,8 @@ default:
 	echo use gen, test, vendor or install
 
 gen:
-	go-bindata -o editor/test/output_test.go -pkg test -prefix sample/out_ ./sample/out_*.txt
+	goblet -g -p test -o editor/test/output_test.go --ignore-dotfiles ./sample/out_*.txt
+	gofmt -w editor/test/output_test.go
 
 test:
 	go test ./...
