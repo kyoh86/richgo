@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io"
 	"os"
 	"os/exec"
 	"syscall"
@@ -16,56 +15,16 @@ const testCmd = "test"
 
 type factoryFunc func() editor.Editor
 
-var lps = map[string]factoryFunc{
-	"test": test.New,
-}
-
 func main() {
 	config.Load()
 
-	var cmd *exec.Cmd
-	var factory factoryFunc = editor.Parrot
-	var colorize bool
-
-	// without arguments
-	switch len(os.Args) {
-	case 0:
-		panic("no arguments")
-	case 1:
-		cmd = exec.Command("go")
-	default:
-		// This is a bit of a special case. Somebody is already
-		// running `go test` for us, and just wants us to prettify the
-		// output.
-		switch os.Args[1] {
-		case testFilterCmd:
-			colorize = true
-			cmd = exec.Command("cat", "-")
-			factory = test.New
-		case testCmd:
-			colorize = true
-			fallthrough
-		default:
-			cmd = exec.Command("go", os.Args[1:]...)
-			// select a wrapper with subcommand
-			if f, ok := lps[os.Args[1]]; ok {
-				factory = f
-			}
+	cmd, factory := parseArgs(os.Args[1:])
+	tear := wrapCmd(cmd, factory)
+	defer func() {
+		if err := tear(); err != nil {
+			panic(err)
 		}
-	}
-
-	stderr := io.WriteCloser(os.Stderr)
-	stdout := io.WriteCloser(os.Stdout)
-	if colorize {
-		stderr = formatWriteCloser(os.Stderr, factory)
-		defer stderr.Close()
-
-		stdout = formatWriteCloser(os.Stdout, factory)
-		defer stdout.Close()
-	}
-	cmd.Stderr = stderr
-	cmd.Stdout = stdout
-	cmd.Stdin = os.Stdin
+	}()
 
 	switch err := cmd.Run().(type) {
 	case nil:
@@ -81,9 +40,43 @@ func main() {
 	}
 }
 
-func formatWriteCloser(wc io.WriteCloser, factory factoryFunc) io.WriteCloser {
-	if editor.Formattable(os.Stderr) {
-		return editor.Stream(wc, factory())
+func parseArgs(args []string) (*exec.Cmd, factoryFunc) {
+	if len(args) > 0 {
+		switch args[0] {
+		case testFilterCmd:
+			return exec.Command("cat", "-"), test.New
+		case testCmd:
+			return exec.Command("go", args...), test.New
+		}
 	}
-	return editor.Stream(wc, editor.Parrot())
+	return exec.Command("go"), nil
+}
+
+func wrapCmd(cmd *exec.Cmd, factory factoryFunc) func() error {
+	if factory == nil {
+		cmd.Stderr = os.Stderr
+		cmd.Stdout = os.Stdout
+		cmd.Stdin = os.Stdin
+		return func() error { return nil }
+	}
+	if !editor.Formattable(os.Stderr) {
+		cmd.Stderr = os.Stderr
+		cmd.Stdout = os.Stdout
+		cmd.Stdin = os.Stdin
+		return func() error { return nil }
+	}
+	stderr := editor.Stream(os.Stderr, factory())
+	stdout := editor.Stream(os.Stdout, factory())
+	cmd.Stderr = stderr
+	cmd.Stdout = stdout
+	cmd.Stdin = os.Stdin
+	return func() (retErr error) {
+		if err := stderr.Close(); err != nil {
+			retErr = err
+		}
+		if err := stdout.Close(); err != nil && retErr == nil {
+			retErr = err
+		}
+		return
+	}
 }

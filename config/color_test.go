@@ -22,6 +22,7 @@ func TestMarshalYAML(t *testing.T) {
 		`c: '#ffeedd'`: {Color{Type: ColorType24Bit, ValueR: 0xff, ValueG: 0xee, ValueB: 0xdd}},
 		`c: 31`:        {Color{Type: ColorType8Bit, Value8: 31}},
 	} {
+		color := color
 		buf, err := yaml.Marshal(&color)
 		if err != nil {
 			t.Errorf("failed to marshal a color %q to yaml with error %q", "black", err)
@@ -47,6 +48,7 @@ func TestMarshalJSON(t *testing.T) {
 		`{"c":"#ffeedd"}`: {C: Color{Type: ColorType24Bit, ValueR: 0xff, ValueG: 0xee, ValueB: 0xdd}},
 		`{"c":31}`:        {C: Color{Type: ColorType8Bit, Value8: 31}},
 	} {
+		color := color
 		buf, err := json.Marshal(&color)
 		if err != nil {
 			t.Errorf("failed to marshal a color to json with error %q", err)
