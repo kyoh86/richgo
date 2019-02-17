@@ -9,6 +9,9 @@ gen:
 test:
 	go test ./...
 
+lint:
+	gometalinter ./...
+
 sample:
 	sample/run.sh
 
