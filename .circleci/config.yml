@@ -38,7 +38,7 @@ jobs:
           at: /go
       - run:
           name: search lints
-          command: "gometalinter --config /etc/gometalinter/config.json ./... | tee >( reviewdog -f=golint -reporter=github-pr-check )"
+          command: "gometalinter ./... | tee >( reviewdog -f=golint -reporter=github-pr-check )"
 
   release:
     working_directory: /go/src/github.com/kyoh86/richgo
