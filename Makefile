@@ -1,4 +1,4 @@
-.PHONY: gen lint test install man
+.PHONY: gen lint test install man sample
 
 VERSION := `git vertag get`
 COMMIT  := `git rev-parse HEAD`
