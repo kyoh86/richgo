@@ -87,6 +87,7 @@ func Load() {
 	C = *actualConfig(c)
 }
 
+// Default is the default configuration
 func Default() {
 	C = *actualConfig(&defaultConfig)
 }

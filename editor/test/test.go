@@ -2,9 +2,6 @@ package test
 
 import (
 	"fmt"
-	"go/build"
-	"os"
-	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -51,7 +48,7 @@ var (
 
 	filename   = regexp.MustCompile(`(?m)([^\s:]+\.go):(\d+)`)
 	emptyline  = regexp.MustCompile(`(?m)^\s*\r?\n`)
-	importpath = regexp.MustCompile(`(?m)^# (.*)$`)
+	importpath = regexp.MustCompile(`(?m)^# ([^ ]+)(?: \[[^ \[\]]+\])?$`)
 
 	any = regexp.MustCompile(`.*`)
 )
@@ -64,17 +61,9 @@ func (e *test) Edit(line string) (string, error) {
 			Exp: importpath,
 			Func: func(s string) string {
 				s = strings.TrimPrefix(s, `# `)
-				imported := filepath.Join(build.Default.GOPATH, `src`, s)
-				stat, err := os.Stat(imported)
-				if err != nil {
-					return s
-				}
-				if stat.IsDir() {
-					processed = true
-					style = config.C.BuildStyle
-					return style.Apply(labels().Build() + s)
-				}
-				return s
+				processed = true
+				style = config.C.BuildStyle
+				return style.Apply(labels().Build() + s)
 			},
 		},
 

@@ -1,19 +1,23 @@
-.PHONY: default gen test vendor install sample
+.PHONY: gen lint test install man sample
 
-default:
-	echo use gen, test, vendor or install
+VERSION := `git vertag get`
+COMMIT  := `git rev-parse HEAD`
 
 gen:
-	go-bindata -o editor/test/output_test.go -pkg test -prefix sample/out_ ./sample/out_*.txt
+	goblet -g -p test -o editor/test/output_test.go --ignore-dotfiles ./sample/out_*.txt
+	gofmt -w editor/test/output_test.go
 
-test:
-	go test ./...
+lint: gen
+	golangci-lint run
+
+test: lint
+	go test -v --race ./...
+
+install: test
+	go install -a -ldflags "-X=main.version=$(VERSION) -X=main.commit=$(COMMIT)" ./...
+
+man: test
+	go run main.go --help-man > richgo.1
 
 sample:
 	sample/run.sh
-
-vendor:
-	dep ensure
-
-install:
-	go install ./...
