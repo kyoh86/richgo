@@ -1,27 +1,21 @@
-# goreleaser
+# for goreleaser output with .goreleaser.yml
 /dist
 
-# Compiled Object files, Static and Dynamic libs (Shared Objects)
-*.o
-*.a
-*.so
+# for man file
+/richgo.1
 
-# Folders
-_obj
-_test
+# go-junit-report output in .circleci/config
+/.circleci/test
 
-# Architecture specific extensions/prefixes
-*.[568vq]
-[568vq].out
-
-*.cgo1.go
-*.cgo2.c
-_cgo_defun.c
-_cgo_gotypes.go
-_cgo_export.*
-
-_testmain.go
-
+# Binaries for programs and plugins
 *.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, build with `go test -c`
 *.test
-*.prof
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out

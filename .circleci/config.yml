@@ -1,55 +1,36 @@
 version: 2
 jobs:
   build:
-    working_directory: /go/src/github.com/kyoh86/richgo
+    working_directory: /home/projects/github.com/kyoh86/richgo
     docker:
-      - image: "kyoh86/gotest:latest-module"
+      - image: kyoh86/gotest:latest
     steps:
       - checkout
       - run:
-          name: vendor
-          command: "go mod vendor"
-      - run:
           name: install
-          command: "go install ./..."
+          command: go install ./...
       - run:
           name: test and take coverage
           command: |
             mkdir -p .circleci/test/gotest
             go test -v -race -coverprofile=coverage.out ./... | go-junit-report > .circleci/test/gotest/results.xml;
-      - store_test_results:
-          path: ./.circleci/test
       - run:
           name: upload coverage
-          command: "bash <(curl -s https://codecov.io/bash)"
-      - persist_to_workspace:
-          root: /go
-          paths:
-            - "src"
-            - "pkg"
-            - "bin"
+          command: bash <(curl -s https://codecov.io/bash)
+      - run:
+          name: search lints
+          command: golangci-lint run
 
-  lint:
-    working_directory: /go/src/github.com/kyoh86/richgo
+
+  release:
+    working_directory: /home/projects/github.com/kyoh86/richgo
     docker:
       - image: kyoh86/gotest:latest
     steps:
-      - attach_workspace:
-          at: /go
-      - run:
-          name: search lints
-          command: "gometalinter ./... | tee >( reviewdog -f=golint -reporter=github-pr-check )"
-
-  release:
-    working_directory: /go/src/github.com/kyoh86/richgo
-    docker:
-      - image: kyoh86/gotest:latest-module
-    steps:
-      - attach_workspace:
-          at: /go
+      - checkout
       - run:
           name: run goreleaser
-          command: "curl -sL https://git.io/goreleaser | bash"
+          command: curl -sL https://git.io/goreleaser | bash
 
 workflows:
   version: 2
@@ -61,18 +42,9 @@ workflows:
               only: /.*/
             tags:
               only: /.*/
-      - lint:
-          requires:
-            - build
-          filters:
-            branches:
-              only: /.*/
-            tags:
-              only: /.*/
       - release:
           requires:
             - build
-            - lint
           filters:
             branches:
               ignore: /.*/
