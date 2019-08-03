@@ -87,6 +87,7 @@ func (e *test) Edit(line string) (string, error) {
 		editor.RegexRepl{
 			Exp: passtail,
 			Func: func(s string) string {
+				s = strings.TrimLeft(s, " ")
 				if *config.C.LeaveTestPrefix {
 					s = strings.TrimPrefix(s, `--- PASS: `)
 				} else {
@@ -101,6 +102,7 @@ func (e *test) Edit(line string) (string, error) {
 		editor.RegexRepl{
 			Exp: failtail,
 			Func: func(s string) string {
+				s = strings.TrimLeft(s, " ")
 				if *config.C.LeaveTestPrefix {
 					s = strings.TrimPrefix(s, `--- FAIL: `)
 				} else {
@@ -115,6 +117,7 @@ func (e *test) Edit(line string) (string, error) {
 		editor.RegexRepl{
 			Exp: skiptail,
 			Func: func(s string) string {
+				s = strings.TrimLeft(s, " ")
 				if *config.C.LeaveTestPrefix {
 					s = strings.TrimPrefix(s, `--- SKIP: `)
 				} else {
