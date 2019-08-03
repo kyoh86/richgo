@@ -155,6 +155,8 @@ uncoveredStyle:
 # If you want to delete lines, write the regular expressions.
 removals:
   - (regexp)
+# If you want to leave `Test` prefixes, set it "true".
+leaveTestPrefix: (true | false)
 ```
 
 ### Line categories

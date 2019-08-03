@@ -34,9 +34,9 @@ const noTestPattern = `\s+\[(?:no test files|no tests to run)\]`
 
 var (
 	runhead    = regexp.MustCompile(`(?m)^=== RUN   Test.*`)
-	passtail   = regexp.MustCompile(`(?m)^(\s*)--- PASS: Test`)
-	skiptail   = regexp.MustCompile(`(?m)^(\s*)--- SKIP: Test`)
-	failtail   = regexp.MustCompile(`(?m)^(\s*)--- FAIL: Test`)
+	passtail   = regexp.MustCompile(`(?m)^(\s*)--- PASS: Test.*`)
+	skiptail   = regexp.MustCompile(`(?m)^(\s*)--- SKIP: Test.*`)
+	failtail   = regexp.MustCompile(`(?m)^(\s*)--- FAIL: Test.*`)
 	passlonely = regexp.MustCompile(`(?m)^PASS$`)
 	faillonely = regexp.MustCompile(`(?m)^FAIL$`)
 
@@ -70,7 +70,11 @@ func (e *test) Edit(line string) (string, error) {
 		editor.RegexRepl{
 			Exp: runhead,
 			Func: func(s string) string {
-				s = strings.TrimPrefix(s, `=== RUN   Test`)
+				if *config.C.LeaveTestPrefix {
+					s = strings.TrimPrefix(s, `=== RUN   `)
+				} else {
+					s = strings.TrimPrefix(s, `=== RUN   Test`)
+				}
 				floors := strings.Split(s, `/`)
 				processed = true
 
@@ -83,7 +87,11 @@ func (e *test) Edit(line string) (string, error) {
 		editor.RegexRepl{
 			Exp: passtail,
 			Func: func(s string) string {
-				s = passtail.ReplaceAllString(s, "$1")
+				if *config.C.LeaveTestPrefix {
+					s = strings.TrimPrefix(s, `--- PASS: `)
+				} else {
+					s = strings.TrimPrefix(s, `--- PASS: Test`)
+				}
 				floors := strings.Split(s, `/`)
 				processed = true
 				style = config.C.PassStyle
@@ -93,7 +101,11 @@ func (e *test) Edit(line string) (string, error) {
 		editor.RegexRepl{
 			Exp: failtail,
 			Func: func(s string) string {
-				s = passtail.ReplaceAllString(s, "$1")
+				if *config.C.LeaveTestPrefix {
+					s = strings.TrimPrefix(s, `--- FAIL: `)
+				} else {
+					s = strings.TrimPrefix(s, `--- FAIL: Test`)
+				}
 				floors := strings.Split(s, `/`)
 				processed = true
 				style = config.C.FailStyle
@@ -103,7 +115,11 @@ func (e *test) Edit(line string) (string, error) {
 		editor.RegexRepl{
 			Exp: skiptail,
 			Func: func(s string) string {
-				s = skiptail.ReplaceAllString(s, "$1")
+				if *config.C.LeaveTestPrefix {
+					s = strings.TrimPrefix(s, `--- SKIP: `)
+				} else {
+					s = strings.TrimPrefix(s, `--- SKIP: Test`)
+				}
 				floors := strings.Split(s, `/`)
 				processed = true
 				style = config.C.SkipStyle

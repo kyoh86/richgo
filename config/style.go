@@ -76,5 +76,6 @@ func (s *Style) Apply(str string) string {
 	if len(ansi.String()) == 0 {
 		return str
 	}
+
 	return aec.Apply(str, ansi)
 }

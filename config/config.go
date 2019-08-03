@@ -17,4 +17,6 @@ type Config struct {
 	UncoveredStyle *Style `json:"uncoveredStyle,omitempty" yaml:"uncoveredStyle,omitempty"`
 
 	Removals []string `json:"removals,omitempty" yaml:"removals,omitempty"`
+
+	LeaveTestPrefix *bool `json:"leaveTestPrefix,omitempty" yaml:"leaveTestPrefix,omitempty"`
 }
