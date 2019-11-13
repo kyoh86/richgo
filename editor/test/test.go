@@ -181,8 +181,24 @@ func (e *test) Edit(line string) (string, error) {
 			},
 		},
 
-		editor.RegexRepl{Exp: passlonely},
-		editor.RegexRepl{Exp: faillonely},
+		editor.RegexRepl{
+			Exp: passlonely,
+			Func: func(s string) string {
+				processed = true
+				style = config.C.PassPackageStyle
+
+				return style.Apply("PASS")
+			},
+		},
+		editor.RegexRepl{
+			Exp: faillonely,
+			Func: func(s string) string {
+				processed = true
+				style = config.C.FailPackageStyle
+
+				return style.Apply("FAIL")
+			},
+		},
 
 		editor.RegexRepl{
 			Exp:  filename,

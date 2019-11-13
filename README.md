@@ -141,6 +141,14 @@ fileStyle:
 lineStyle:
   # Same format as `buildStyle`
 
+# Style of the "Pass" package lines.
+passPackageStyle:
+  # Same format as `buildStyle`
+
+# Style of the "Fail" package lines.
+failPackageStyle:
+  # Same format as `buildStyle`
+
 # A threashold of the coverage
 coverThreshold: (0-100)
 
@@ -192,6 +200,16 @@ Rich-Go separate the output-lines in following categories.
   sample_skip_test.go:6:
 ?     github.com/kyoh86/richgo/sample/notest  [no test files]</code></pre>
 
+* PassPackage:  
+  When tests in package are successed, Go prints just:
+
+  <pre><code>PASS</code></pre>
+
+* Fail:  
+  When a test in package are failed, Go prints just:
+
+  <pre><code>FAIL</code></pre>
+
 * Cover:  
   If the coverage analysis is enabled, Go prints the coverage like this:
 
@@ -240,6 +258,13 @@ failStyle:
   foreground: red
 skipStyle:
   foreground: lightBlack
+passPackageStyle:
+  foreground: green
+  hide: true
+failPackageStyle:
+  bold: true
+  foreground: red
+  hide: true
 coverThreshold: 50
 coveredStyle:
   foreground: green

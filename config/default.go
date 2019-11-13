@@ -66,5 +66,20 @@ func init() {
 				Name: Magenta,
 			},
 		},
+		PassPackageStyle: &Style{
+			Foreground: &Color{
+				Type: ColorTypeName,
+				Name: Green,
+			},
+			Hide: ptr.True(),
+		},
+		FailPackageStyle: &Style{
+			Hide: ptr.True(),
+			Bold: ptr.Bool(true),
+			Foreground: &Color{
+				Type: ColorTypeName,
+				Name: Red,
+			},
+		},
 	}
 }
