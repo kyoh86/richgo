@@ -1,0 +1,62 @@
+name: Test
+
+on:
+  push:
+    branches: '*'
+
+jobs:
+  vendor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v1
+        with:
+          go-version: 1.13.x
+      - uses: actions/checkout@v1
+      - name: get dependencies
+        run: go get -v -t -d ./...
+      - name: vendoring
+        run: go mod vendor
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: repository
+          path: .
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: vendor
+    steps:
+      - uses: actions/checkout@v1
+      - uses: kyoh86/action-golangci-lint@v1 
+
+  test:
+    runs-on: ubuntu-latest
+    needs: vendor
+    steps:
+      - uses: actions/setup-go@v1
+        with:
+          go-version: 1.13.x
+      - uses: actions/download-artifact@v1
+        with:
+          name: repository
+          path: .
+      - name: test race
+        run: go test -v -race ./...
+
+  cover:
+    runs-on: ubuntu-latest
+    needs: vendor
+    steps:
+      - uses: actions/setup-go@v1
+        with:
+          go-version: 1.13.x
+      - uses: actions/download-artifact@v1
+        with:
+          name: repository
+          path: .
+      - name: take coverage
+        run: go test -coverprofile=coverage.txt -covermode=count ./...
+      - uses: codecov/codecov-action@v1.0.3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: coverage.txt

@@ -4,9 +4,6 @@
 # for man file
 /richgo.1
 
-# go-junit-report output in .circleci/config
-/.circleci/test
-
 # Binaries for programs and plugins
 *.exe
 *.exe~

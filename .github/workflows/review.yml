@@ -1,0 +1,14 @@
+name: Review
+
+on:
+  [pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: reviewdog/action-golangci-lint@v1
+        with:
+          level: info
+          github_token: ${{ secrets.GITHUB_TOKEN }}

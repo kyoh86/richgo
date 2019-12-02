@@ -1,10 +1,9 @@
+# richgo
 
-# Rich-Go
+Rich-Go will enrich `go test` outputs with text decorations
+
 [![Go Report Card](https://goreportcard.com/badge/github.com/kyoh86/richgo)](https://goreportcard.com/report/github.com/kyoh86/richgo)
-[![CircleCI](https://img.shields.io/circleci/project/github/kyoh86/richgo.svg)](https://circleci.com/gh/kyoh86/richgo)
 [![Coverage Status](https://img.shields.io/codecov/c/github/kyoh86/richgo.svg)](https://codecov.io/gh/kyoh86/richgo)
-
-Rich-Go will enrich `go test` outputs with text decorations.
 
 [![asciicast](https://asciinema.org/a/99810.png)](https://asciinema.org/a/99810)
 

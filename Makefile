@@ -16,8 +16,5 @@ test: lint
 install: test
 	go install -a -ldflags "-X=main.version=$(VERSION) -X=main.commit=$(COMMIT)" ./...
 
-man: test
-	go run main.go --help-man > richgo.1
-
 sample:
 	sample/run.sh

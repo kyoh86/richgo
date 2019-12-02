@@ -3,18 +3,20 @@ release:
   github:
     owner: kyoh86
     name: richgo
-brew:
-  install: bin.install "richgo"
+brews:
+- install: |
+    bin.install "richgo"
   github:
     owner: kyoh86
     name: homebrew-tap
   folder: Formula
   homepage: https://github.com/kyoh86/richgo
-  description: Checks for unpinned variables in go programs.
+  description: Rich-Go will enrich `go test` outputs with text decorations
 builds:
 - goos:
   - linux
   - darwin
+  - windows
   goarch:
   - amd64
   - "386"
@@ -23,10 +25,13 @@ builds:
   main: .
   ldflags: -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
   binary: richgo
-archive:
+archives:
+- id: gzip
   format: tar.gz
-  name_template: '{{ .Binary }}_{{.Version}}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{
-    .Arm }}{{ end }}'
+  format_overrides:
+    - goos: windows
+      format: zip
+  name_template: "{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
   files:
   - licence*
   - LICENCE*
