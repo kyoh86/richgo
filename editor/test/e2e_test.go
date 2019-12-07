@@ -36,7 +36,7 @@ func TestE2E(t *testing.T) {
 		for _, line := range strings.Split(act, "\n") {
 			if len(line) > 0 {
 				require.True(t, len(exps) > expi, "should have length more than", expi)
-				assert.Equal(t, string(exps[expi]), line, "at line %d", expi)
+				assert.Equal(t, string(exps[expi]), line, "at line %d", expi+1)
 				expi++
 			}
 		}
