@@ -12,7 +12,7 @@ jobs:
       - uses: actions/setup-go@v1
         with:
           go-version: 1.13.x
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: get dependencies
         run: go get -v -t -d ./...
       - name: test race
