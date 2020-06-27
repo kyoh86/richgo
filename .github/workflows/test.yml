@@ -8,16 +8,16 @@ jobs:
   vendor:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-go@v1
-        with:
-          go-version: 1.13.x
       - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.14.x
       - name: get dependencies
         run: go get -v -t -d ./...
       - name: vendoring
         run: go mod vendor
 
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v2
         with:
           name: repository
           path: .
@@ -27,16 +27,20 @@ jobs:
     needs: vendor
     steps:
       - uses: actions/checkout@v2
-      - uses: kyoh86/action-golangci-lint@v1 
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v1
+        with:
+          # Required: the version of golangci-lint is required and must be specified without patch version: we always use the latest patch version.
+          version: v1.27
 
   test:
     runs-on: ubuntu-latest
     needs: vendor
     steps:
-      - uses: actions/setup-go@v1
+      - uses: actions/setup-go@v2
         with:
-          go-version: 1.13.x
-      - uses: actions/download-artifact@v1
+          go-version: 1.14.x
+      - uses: actions/download-artifact@v2
         with:
           name: repository
           path: .
@@ -47,10 +51,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: vendor
     steps:
-      - uses: actions/setup-go@v1
+      - uses: actions/setup-go@v2
         with:
-          go-version: 1.13.x
-      - uses: actions/download-artifact@v1
+          go-version: 1.14.x
+      - uses: actions/download-artifact@v2
         with:
           name: repository
           path: .

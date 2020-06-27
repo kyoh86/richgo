@@ -1,4 +1,4 @@
-name: Deploy
+name: Release
 
 on:
   push:
@@ -6,18 +6,18 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+
 
 jobs:
-  deploy:
+  release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-go@v1
-        with:
-          go-version: 1.13.x
       - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.14.x
       - name: get dependencies
         run: go get -v -t -d ./...
       - name: test race
         run: go test -v -race ./...
-      - uses: goreleaser/goreleaser-action@v1
+      - uses: goreleaser/goreleaser-action@v2
         with:
           args: release --rm-dist
         env:
