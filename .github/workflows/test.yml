@@ -47,6 +47,22 @@ jobs:
       - name: test race
         run: go test -v -race ./...
 
+  release-test:
+    runs-on: ubuntu-latest
+    needs: vendor
+    steps:
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.14.x
+      - uses: actions/download-artifact@v2
+        with:
+          name: repository
+          path: .
+      - name: release (dry-run)
+        uses: goreleaser/goreleaser-action@v2
+        with:
+          args: release --rm-dist --skip-publish --snapshot
+
   cover:
     runs-on: ubuntu-latest
     needs: vendor
