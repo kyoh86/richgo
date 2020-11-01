@@ -11,4 +11,4 @@ echo "=====================================   go test   ========================
 echo ""
 echo "===================================== richgo test ====================================="
 export RICHGO_LOCAL=1
-go run main.go ${OPTIONS}
+go run . ${OPTIONS}
