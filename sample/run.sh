@@ -1,14 +1,22 @@
-#!/bin/sh
+#!/bin/bash
 
 bin="$(cd -- "$(dirname -- "${BASH_SOURCE:-${(%):-%N}}")"; pwd)"
-cd ${bin}/..
+cd "${bin}/.."
 
-OPTIONS="test -tags=sample ./sample/... -v -cover"
+export RICHGO_LOCAL=1
+
+OPTIONS=(test -tags=sample ./sample/... -cover)
 
 echo "=====================================   go test   ====================================="
-\go ${OPTIONS}
+\go "${OPTIONS[@]}"
 
 echo ""
 echo "===================================== richgo test ====================================="
-export RICHGO_LOCAL=1
-go run . ${OPTIONS}
+go run . "${OPTIONS[@]}"
+
+echo "====================================   go test -v  ===================================="
+\go "${OPTIONS[@]}" -v
+
+echo ""
+echo "==================================== richgo test -v ==================================="
+go run . "${OPTIONS[@]}" -v

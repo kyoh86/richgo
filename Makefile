@@ -4,7 +4,7 @@ VERSION := `git vertag get`
 COMMIT  := `git rev-parse HEAD`
 
 gen:
-	goblet -g -p test -o editor/test/output_test.go --ignore-dotfiles ./sample/out_*.txt
+	go run github.com/deadcheat/goblet/cmd/goblet -p test -o editor/test/output_test.go --ignore-dotfiles ./sample/out_*.txt
 	gofmt -w editor/test/output_test.go
 
 lint: gen

@@ -1,52 +1,53 @@
-# github.com/kyoh86/richgo/sample/buildfail
-sample/buildfail/buildfail_test.go:6:10: t.Foo undefined (type *testing.T has no field or method Foo)
+# github.com/kyoh86/richgo/sample/buildfail [github.com/kyoh86/richgo/sample/buildfail.test]
+sample/buildfail/buildfail_test.go:8:7: t.Foo undefined (type *testing.T has no field or method Foo)
 === RUN   TestSampleNG
+    sample_ng_test.go:9: It's not OK... :(
 === RUN   TestSampleNG/SubtestNG
+    sample_ng_test.go:13: It's also not OK... :(
 --- FAIL: TestSampleNG (0.00s)
-	sample_ng_test.go:9: It's not OK... :(
     --- FAIL: TestSampleNG/SubtestNG (0.00s)
-    	sample_ng_test.go:13: It's also not OK... :(
 === RUN   TestSampleOK
+    sample_ok_test.go:11: It's OK!
 === RUN   TestSampleOK/SubtestOK
 time:2017-01-01T01:01:01+09:00
+    sample_ok_test.go:15: It's also OK!
 --- PASS: TestSampleOK (0.00s)
-	sample_ok_test.go:11: It's OK!
     --- PASS: TestSampleOK/SubtestOK (0.00s)
-    	sample_ok_test.go:15: It's also OK!
 === RUN   TestSampleSkip
+    sample_skip_test.go:8: 
 --- SKIP: TestSampleSkip (0.00s)
-	sample_skip_test.go:6: 
 === RUN   TestSampleSkipSub
 === RUN   TestSampleSkipSub/SubtestSkip
+    sample_skip_test.go:13: 
 --- PASS: TestSampleSkipSub (0.00s)
     --- SKIP: TestSampleSkipSub/SubtestSkip (0.00s)
-    	sample_skip_test.go:11: 
 === RUN   TestSampleTimeout
 === RUN   TestSampleTimeout/SubtestTimeout
 --- PASS: TestSampleTimeout (3.00s)
     --- PASS: TestSampleTimeout/SubtestTimeout (3.00s)
 FAIL
-coverage: 0.0% of statements
-FAIL	github.com/kyoh86/richgo/sample	3.014s
+coverage: [no statements]
+FAIL	github.com/kyoh86/richgo/sample	3.097s
 FAIL	github.com/kyoh86/richgo/sample/buildfail [build failed]
 === RUN   TestCover05
 --- PASS: TestCover05 (0.00s)
 PASS
 coverage: 50.0% of statements
-ok  	github.com/kyoh86/richgo/sample/cover05	0.015s	coverage: 50.0% of statements
+ok  	github.com/kyoh86/richgo/sample/cover05	(cached)	coverage: 50.0% of statements
 === RUN   TestCoverAll
 --- PASS: TestCoverAll (0.00s)
 PASS
 coverage: 100.0% of statements
-ok  	github.com/kyoh86/richgo/sample/coverall	0.008s	coverage: 100.0% of statements
+ok  	github.com/kyoh86/richgo/sample/coverall	(cached)	coverage: 100.0% of statements
 testing: warning: no tests to run
 PASS
 coverage: 0.0% of statements
-ok  	github.com/kyoh86/richgo/sample/emptytest	0.013s	coverage: 0.0% of statements [no tests to run]
+ok  	github.com/kyoh86/richgo/sample/emptytest	(cached)	coverage: 0.0% of statements [no tests to run]
 === RUN   TestNocover
+    nocover_test.go:8: accept
 --- PASS: TestNocover (0.00s)
-	nocover_test.go:6: accept
 PASS
 coverage: 0.0% of statements
-ok  	github.com/kyoh86/richgo/sample/nocover	0.007s	coverage: 0.0% of statements
+ok  	github.com/kyoh86/richgo/sample/nocover	(cached)	coverage: 0.0% of statements
 ?   	github.com/kyoh86/richgo/sample/notest	[no test files]
+FAIL
