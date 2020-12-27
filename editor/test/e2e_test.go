@@ -12,7 +12,7 @@ import (
 )
 
 func TestE2E(t *testing.T) {
-	mustAsset := func(t *testing, T, name string) []byte {
+	mustAsset := func(t *testing.T, name string) []byte {
 		file, err := Assets.File(name)
 		if err != nil {
 			t.Fatalf("failed to find %s: %s", name, err)
