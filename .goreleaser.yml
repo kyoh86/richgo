@@ -1,8 +1,3 @@
-project_name: richgo
-release:
-  github:
-    owner: kyoh86
-    name: richgo
 brews:
 - install: |
     bin.install "richgo"
@@ -12,34 +7,3 @@ brews:
   folder: Formula
   homepage: https://github.com/kyoh86/richgo
   description: Rich-Go will enrich `go test` outputs with text decorations
-builds:
-- goos:
-  - linux
-  - darwin
-  - windows
-  goarch:
-  - amd64
-  - "386"
-  goarm:
-  - "6"
-  main: .
-  ldflags: -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
-  binary: richgo
-archives:
-- id: gzip
-  format: tar.gz
-  format_overrides:
-    - goos: windows
-      format: zip
-  name_template: "{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
-  files:
-  - licence*
-  - LICENCE*
-  - license*
-  - LICENSE*
-  - readme*
-  - README*
-  - changelog*
-  - CHANGELOG*
-snapshot:
-  name_template: SNAPSHOT-{{ .Commit }}

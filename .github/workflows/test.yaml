@@ -1,0 +1,36 @@
+name: Test CLI
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  test:
+    name: Test local sources
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v2
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15
+      - name: Test Go
+        run: go test -race ./...
+
+  test-status:
+    name: Test status
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Set Check Status Success
+        uses: Sibz/github-status-action@v1.1.1
+        with:
+          context: test-status
+          authToken: ${{ secrets.GITHUB_TOKEN }}
+          state: success
