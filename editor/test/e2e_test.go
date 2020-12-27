@@ -12,20 +12,19 @@ import (
 )
 
 func TestE2E(t *testing.T) {
-	mustAsset := func(name string) []byte {
-		t.Helper()
+	mustAsset := func(t *testing, T, name string) []byte {
 		file, err := Assets.File(name)
 		if err != nil {
-			t.Fatal(err)
+			t.Fatalf("failed to find %s: %s", name, err)
 		}
 		buf, err := ioutil.ReadAll(file)
 		if err != nil {
-			t.Fatal(err)
+			t.Fatalf("failed to load %s: %s", name, err)
 		}
 		return buf
 	}
-	raws := bytes.Split(mustAsset("/sample/out_raw.txt"), []byte("\n"))
-	exps := bytes.Split(mustAsset("/sample/out_colored.txt"), []byte("\n"))
+	raws := bytes.Split(mustAsset(t, "/sample/out_raw.txt"), []byte("\n"))
+	exps := bytes.Split(mustAsset(t, "/sample/out_colored.txt"), []byte("\n"))
 
 	config.Default()
 	editor := New()
