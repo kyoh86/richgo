@@ -3,29 +3,37 @@ package test
 import (
 	"bytes"
 	"io/ioutil"
-	"path/filepath"
 	"strings"
 	"testing"
 
 	"github.com/kyoh86/richgo/config"
+	_ "github.com/kyoh86/richgo/editor/test/statik"
+	"github.com/rakyll/statik/fs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestE2E(t *testing.T) {
 	mustAsset := func(t *testing.T, name string) []byte {
-		file, err := Assets.File(name)
+		statikFS, err := fs.New()
 		if err != nil {
-			t.Fatalf("failed to find %s: %s", name, err)
+			t.Fatalf("failed to init statik FS: %s", err.Error())
 		}
-		buf, err := ioutil.ReadAll(file)
+
+		// Access individual files by their paths.
+		r, err := statikFS.Open(name)
+		if err != nil {
+			t.Fatalf("failed to open %s: %s", name, err)
+		}
+		defer r.Close()
+		buf, err := ioutil.ReadAll(r)
 		if err != nil {
 			t.Fatalf("failed to load %s: %s", name, err)
 		}
 		return buf
 	}
-	raws := bytes.Split(mustAsset(t, filepath.Join("/", "sample", "out_raw.txt")), []byte("\n"))
-	exps := bytes.Split(mustAsset(t, filepath.Join("/", "sample", "out_colored.txt")), []byte("\n"))
+	raws := bytes.Split(mustAsset(t, "/out_raw.txt"), []byte("\n"))
+	exps := bytes.Split(mustAsset(t, "/out_colored.txt"), []byte("\n"))
 
 	config.Default()
 	editor := New()

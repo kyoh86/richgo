@@ -4,7 +4,7 @@ VERSION := `git vertag get`
 COMMIT  := `git rev-parse HEAD`
 
 gen:
-	go run github.com/deadcheat/goblet/cmd/goblet -p test -o editor/test/output_test.go --ignore-dotfiles ./sample/out_*.txt
+	go run github.com/rakyll/statik -src=./sample -dest editor/test -include='*.txt' -f
 	gofmt -w editor/test/output_test.go
 
 lint: gen
