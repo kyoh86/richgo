@@ -3,6 +3,7 @@ package test
 import (
 	"bytes"
 	"io/ioutil"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -23,8 +24,8 @@ func TestE2E(t *testing.T) {
 		}
 		return buf
 	}
-	raws := bytes.Split(mustAsset(t, "/sample/out_raw.txt"), []byte("\n"))
-	exps := bytes.Split(mustAsset(t, "/sample/out_colored.txt"), []byte("\n"))
+	raws := bytes.Split(mustAsset(t, filepath.Join("/", "sample", "out_raw.txt")), []byte("\n"))
+	exps := bytes.Split(mustAsset(t, filepath.Join("/", "sample", "out_colored.txt")), []byte("\n"))
 
 	config.Default()
 	editor := New()
