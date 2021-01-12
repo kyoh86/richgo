@@ -24,6 +24,13 @@ brew tap kyoh86/tap
 brew install richgo
 ```
 
+(asdf):
+
+```
+asdf plugin add richgo
+asdf install richgo 0.3.6
+```
+
 # Usage
 
 ## Basic
