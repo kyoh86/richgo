@@ -1,0 +1,80 @@
+name: Test
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  test:
+    name: Test local sources
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v2
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15
+      - name: Test Go
+        run: 	go test -v --race ./...
+
+  test-release:
+    name: Test releases
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v2
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15
+      - name: Try Bump-up Semantic Version
+        uses: kyoh86/git-vertag-action@v1
+        with:
+          method: "patch"
+      - name: Run GoReleaser (dry-run)
+        uses: goreleaser/goreleaser-action@v2
+        with:
+          args: release --rm-dist --skip-publish --snapshot
+
+  test-others:
+    name: Test others
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v2
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15
+      - name: Search diagnostics
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.32
+      - name: Take coverage
+        run: go test -coverprofile=coverage.txt -covermode=atomic ./...
+      - name: Send coverage
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
+          file: coverage.txt
+
+  test-status:
+    name: Test status
+    runs-on: ubuntu-latest
+    needs:
+      - test
+      - test-others
+      - test-release
+    steps:
+      - name: Set Check Status Success
+        uses: Sibz/github-status-action@v1.1.1
+        with:
+          context: test-status
+          authToken: ${{ secrets.GITHUB_TOKEN }}
+          state: success

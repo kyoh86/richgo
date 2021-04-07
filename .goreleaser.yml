@@ -1,9 +1,9 @@
 brews:
-- install: |
-    bin.install "richgo"
-  github:
-    owner: kyoh86
-    name: homebrew-tap
-  folder: Formula
-  homepage: https://github.com/kyoh86/richgo
-  description: Rich-Go will enrich `go test` outputs with text decorations
+  - install: |
+      bin.install "richgo"
+    tap:
+      owner: kyoh86
+      name: homebrew-tap
+    folder: Formula
+    homepage: https://github.com/kyoh86/richgo
+    description: Rich-Go will enrich `go test` outputs with text decorations

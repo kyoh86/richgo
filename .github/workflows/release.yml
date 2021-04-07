@@ -1,4 +1,4 @@
-name: Release CLI to the GitHub Release
+name: Release to the GitHub Release
 on:
   workflow_dispatch:
     inputs:
@@ -13,6 +13,12 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     steps:
+      - name: Check Actor
+        if: github.actor != 'kyoh86'
+        run: exit 1
+      - name: Check Branch
+        if: github.ref != 'refs/heads/main'
+        run: exit 1
       - name: Wait Tests
         id: test_result
         uses: Sibz/await-status-action@v1.0.1
