@@ -40,13 +40,10 @@ type Style struct {
 	Background *Color `json:"background,omitempty" yaml:"background,omitempty"`
 }
 
-// Apply style To string
-func (s *Style) Apply(str string) string {
+// ANSI get the ANSI string
+func (s *Style) ANSI() aec.ANSI {
 	if s == nil {
-		return str // when a prevLineStyle is not set, editor/test/test.go calls it in nil
-	}
-	if s.Hide != nil && *s.Hide {
-		return ""
+		return emptyColor // when a prevLineStyle is not set, editor/test/test.go calls it in nil
 	}
 
 	ansi := s.Background.B()
@@ -71,6 +68,19 @@ func (s *Style) Apply(str string) string {
 		if *style.flag {
 			ansi = ansi.With(style.ansi)
 		}
+	}
+	return ansi
+}
+
+// Apply style To string
+func (s *Style) Apply(str string) string {
+	if s.Hide != nil && *s.Hide {
+		return ""
+	}
+
+	ansi := s.ANSI()
+	if ansi == emptyColor {
+		return str
 	}
 
 	if len(ansi.String()) == 0 {
