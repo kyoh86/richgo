@@ -26,20 +26,23 @@
 [32mPASS | SampleTimeout (3.00s)[0m
 [32mPASS |   SampleTimeout/SubtestTimeout (3.00s)[0m
 [32m     | coverage: [no statements][0m
-[31m[1mFAIL | 	github.com/kyoh86/richgo/sample	3.002s[0m
+[31m[1mFAIL | 	github.com/kyoh86/richgo/sample	3.003s[0m
 [31m[1mFAIL | 	github.com/kyoh86/richgo/sample/buildfail [build failed][0m
 [90mSTART| Cover05[0m
 [32mPASS | Cover05 (0.00s)[0m
 [32mCOVER| 50.0% [#####_____][0m
-[32mPASS | github.com/kyoh86/richgo/sample/cover05 coverage: 50.0% of statements[0m[90mSTART| CoverAll[0m
+[32mPASS | github.com/kyoh86/richgo/sample/cover05 coverage: 50.0% of statements[0m
+[90mSTART| CoverAll[0m
 [32mPASS | CoverAll (0.00s)[0m
 [32mCOVER| 100.0% [##########][0m
-[32mPASS | github.com/kyoh86/richgo/sample/coverall coverage: 100.0% of statements[0m[32m     | testing: warning: no tests to run[0m
+[32mPASS | github.com/kyoh86/richgo/sample/coverall coverage: 100.0% of statements[0m
+[32m     | testing: warning: no tests to run[0m
 [33m[1mCOVER| 0.0% [__________][0m
 [32mPASS | github.com/kyoh86/richgo/sample/emptytest coverage: 0.0% of statements[0m
 [90mSTART| Nocover[0m
 [90m     |     [36mnocover_test.go[0m[35m:8[0m[90m: accept[0m
 [32mPASS | Nocover (0.00s)[0m
 [33m[1mCOVER| 0.0% [__________][0m
-[32mPASS | github.com/kyoh86/richgo/sample/nocover coverage: 0.0% of statements[0m[90mSKIP | github.com/kyoh86/richgo/sample/notest	[no test files][0m
+[32mPASS | github.com/kyoh86/richgo/sample/nocover coverage: 0.0% of statements[0m
+[90mSKIP | github.com/kyoh86/richgo/sample/notest	[no test files][0m
 exit status 2
