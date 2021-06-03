@@ -5,7 +5,6 @@ COMMIT  := `git rev-parse HEAD`
 
 gen:
 	go run github.com/rakyll/statik -src=./sample -dest editor/test -include='*.txt' -f
-	gofmt -w editor/test/output_test.go
 
 lint: gen
 	golangci-lint run

@@ -37,8 +37,8 @@ var (
 	passtail   = regexp.MustCompile(`(?m)^([ \t]*)--- PASS: Test.*`)
 	skiptail   = regexp.MustCompile(`(?m)^([ \t]*)--- SKIP: Test.*`)
 	failtail   = regexp.MustCompile(`(?m)^([ \t]*)--- FAIL: Test.*`)
-	passlonely = regexp.MustCompile(`(?m)^PASS$`)
-	faillonely = regexp.MustCompile(`(?m)^FAIL$`)
+	passlonely = regexp.MustCompile(`(?m)^PASS[ \t]*$`)
+	faillonely = regexp.MustCompile(`(?m)^FAIL[ \t]*$`)
 
 	okPath     = regexp.MustCompile(`(?m)^ok[ \t]+([^ \t]+)[ \t]*(?:[\d\.]+\w+|\(cached\))?[ \t]*(?:[ \t]+(coverage:[ \t]+\d+\.\d+% of statements)[ \t]*)?(?:` + noTestPattern + `)?$`)
 	failPath   = regexp.MustCompile(`(?m)^FAIL[ \t]+[^ \t]+[ \t]+(?:[\d\.]+\w+|\[build failed\])$`)
@@ -46,7 +46,7 @@ var (
 
 	coverage = regexp.MustCompile(`(?m)^coverage: ((\d+)\.\d)+% of statements?$`)
 
-	filename   = regexp.MustCompile(`(?m)([^[ \t]:]+\.go):(\d+)`)
+	filename   = regexp.MustCompile(`(?m)([^\s:]+\.go)((?::\d+){1,2})`)
 	emptyline  = regexp.MustCompile(`(?m)^[ \t]*\r?\n`)
 	importpath = regexp.MustCompile(`(?m)^# ([^ ]+)(?: \[[^ \[\]]+\])?$`)
 
@@ -185,24 +185,22 @@ func (e *test) Edit(line string) (string, error) {
 			Exp: passlonely,
 			Func: func(s string) string {
 				processed = true
-				style = config.C.PassPackageStyle
-
-				return style.Apply("PASS")
+				return config.C.PassPackageStyle.Apply("PASS")
 			},
 		},
 		editor.RegexRepl{
 			Exp: faillonely,
 			Func: func(s string) string {
 				processed = true
-				style = config.C.FailPackageStyle
-
-				return style.Apply("FAIL")
+				return config.C.FailPackageStyle.Apply("FAIL")
 			},
 		},
 
 		editor.RegexRepl{
-			Exp:  filename,
-			Repl: config.C.FileStyle.Apply(`$1`) + ":" + config.C.LineStyle.Apply(`$2`),
+			Exp: filename,
+			Func: func(s string) string {
+				return filename.ReplaceAllString(s, config.C.FileStyle.Apply(`$1`)+config.C.LineStyle.Apply(`$2`)) + e.prevLineStyle.ANSI().String()
+			},
 		},
 	)
 
