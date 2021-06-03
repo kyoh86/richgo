@@ -27,7 +27,7 @@ time:2017-01-01T01:01:01+09:00
     --- PASS: TestSampleTimeout/SubtestTimeout (3.00s)
 FAIL
 coverage: [no statements]
-FAIL	github.com/kyoh86/richgo/sample	3.097s
+FAIL	github.com/kyoh86/richgo/sample	3.003s
 FAIL	github.com/kyoh86/richgo/sample/buildfail [build failed]
 === RUN   TestCover05
 --- PASS: TestCover05 (0.00s)
