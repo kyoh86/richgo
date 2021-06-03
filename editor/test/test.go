@@ -186,7 +186,7 @@ func (e *test) Edit(line string) (string, error) {
 			Func: func(s string) string {
 				processed = true
 				style = config.C.PassPackageStyle
-				return style.Apply("PASS\n")
+				return style.Apply("PASS")
 			},
 		},
 		editor.RegexRepl{
@@ -194,7 +194,7 @@ func (e *test) Edit(line string) (string, error) {
 			Func: func(s string) string {
 				processed = true
 				style = config.C.FailPackageStyle
-				return style.Apply("FAIL\n")
+				return style.Apply("FAIL")
 			},
 		},
 
