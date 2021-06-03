@@ -1,24 +1,24 @@
 [33m[1mBUILD| github.com/kyoh86/richgo/sample/buildfail [github.com/kyoh86/richgo/sample/buildfail.test][0m
-[33m[1m     | [36msample/buildfail/buildfail_test.go[0m[35m:8:7[0m[33m[1m: t.Foo undefined (type *testing.T has no field or method Foo)[0m
+[33m[1m     | sample/buildfail/buildfail_test.go:8:7: t.Foo undefined (type *testing.T has no field or method Foo)[0m
 [90mSTART| SampleNG[0m
-[90m     |     [36msample_ng_test.go[0m[35m:9[0m[90m: It's not OK... :([0m
+[90m     |     sample_ng_test.go:9: It's not OK... :([0m
 [90mSTART|   SampleNG/SubtestNG[0m
-[90m     |     [36msample_ng_test.go[0m[35m:13[0m[90m: It's also not OK... :([0m
+[90m     |     sample_ng_test.go:13: It's also not OK... :([0m
 [31m[1mFAIL | SampleNG (0.00s)[0m
 [31m[1mFAIL |   SampleNG/SubtestNG (0.00s)[0m
 [90mSTART| SampleOK[0m
-[90m     |     [36msample_ok_test.go[0m[35m:11[0m[90m: It's OK![0m
+[90m     |     sample_ok_test.go:11: It's OK![0m
 [90mSTART|   SampleOK/SubtestOK[0m
 [90m     | time:2017-01-01T01:01:01+09:00[0m
-[90m     |     [36msample_ok_test.go[0m[35m:15[0m[90m: It's also OK![0m
+[90m     |     sample_ok_test.go:15: It's also OK![0m
 [32mPASS | SampleOK (0.00s)[0m
 [32mPASS |   SampleOK/SubtestOK (0.00s)[0m
 [90mSTART| SampleSkip[0m
-[90m     |     [36msample_skip_test.go[0m[35m:8[0m[90m: [0m
+[90m     |     sample_skip_test.go:8: [0m
 [90mSKIP | SampleSkip (0.00s)[0m
 [90mSTART| SampleSkipSub[0m
 [90mSTART|   SampleSkipSub/SubtestSkip[0m
-[90m     |     [36msample_skip_test.go[0m[35m:13[0m[90m: [0m
+[90m     |     sample_skip_test.go:13: [0m
 [32mPASS | SampleSkipSub (0.00s)[0m
 [90mSKIP |   SampleSkipSub/SubtestSkip (0.00s)[0m
 [90mSTART| SampleTimeout[0m
@@ -26,20 +26,23 @@
 [32mPASS | SampleTimeout (3.00s)[0m
 [32mPASS |   SampleTimeout/SubtestTimeout (3.00s)[0m
 [32m     | coverage: [no statements][0m
-[31m[1mFAIL | 	github.com/kyoh86/richgo/sample	3.002s[0m
+[31m[1mFAIL | 	github.com/kyoh86/richgo/sample	3.003s[0m
 [31m[1mFAIL | 	github.com/kyoh86/richgo/sample/buildfail [build failed][0m
 [90mSTART| Cover05[0m
 [32mPASS | Cover05 (0.00s)[0m
 [32mCOVER| 50.0% [#####_____][0m
-[32mPASS | github.com/kyoh86/richgo/sample/cover05 coverage: 50.0% of statements[0m[90mSTART| CoverAll[0m
+[32mPASS | github.com/kyoh86/richgo/sample/cover05 coverage: 50.0% of statements[0m
+[90mSTART| CoverAll[0m
 [32mPASS | CoverAll (0.00s)[0m
 [32mCOVER| 100.0% [##########][0m
-[32mPASS | github.com/kyoh86/richgo/sample/coverall coverage: 100.0% of statements[0m[32m     | testing: warning: no tests to run[0m
+[32mPASS | github.com/kyoh86/richgo/sample/coverall coverage: 100.0% of statements[0m
+[32m     | testing: warning: no tests to run[0m
 [33m[1mCOVER| 0.0% [__________][0m
 [32mPASS | github.com/kyoh86/richgo/sample/emptytest coverage: 0.0% of statements[0m
 [90mSTART| Nocover[0m
-[90m     |     [36mnocover_test.go[0m[35m:8[0m[90m: accept[0m
+[90m     |     nocover_test.go:8: accept[0m
 [32mPASS | Nocover (0.00s)[0m
 [33m[1mCOVER| 0.0% [__________][0m
-[32mPASS | github.com/kyoh86/richgo/sample/nocover coverage: 0.0% of statements[0m[90mSKIP | github.com/kyoh86/richgo/sample/notest	[no test files][0m
+[32mPASS | github.com/kyoh86/richgo/sample/nocover coverage: 0.0% of statements[0m
+[90mSKIP | github.com/kyoh86/richgo/sample/notest	[no test files][0m
 exit status 2

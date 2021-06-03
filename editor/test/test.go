@@ -30,24 +30,24 @@ type test struct {
 	additional    []editor.RegexRepl
 }
 
-const noTestPattern = `\s+\[(?:no test files|no tests to run)\]`
+const noTestPattern = `[ \t]+\[(?:no test files|no tests to run)\]`
 
 var (
 	runhead    = regexp.MustCompile(`(?m)^=== RUN   Test.*`)
-	passtail   = regexp.MustCompile(`(?m)^(\s*)--- PASS: Test.*`)
-	skiptail   = regexp.MustCompile(`(?m)^(\s*)--- SKIP: Test.*`)
-	failtail   = regexp.MustCompile(`(?m)^(\s*)--- FAIL: Test.*`)
+	passtail   = regexp.MustCompile(`(?m)^([ \t]*)--- PASS: Test.*`)
+	skiptail   = regexp.MustCompile(`(?m)^([ \t]*)--- SKIP: Test.*`)
+	failtail   = regexp.MustCompile(`(?m)^([ \t]*)--- FAIL: Test.*`)
 	passlonely = regexp.MustCompile(`(?m)^PASS[ \t]*$`)
 	faillonely = regexp.MustCompile(`(?m)^FAIL[ \t]*$`)
 
-	okPath     = regexp.MustCompile(`(?m)^ok\s+(\S+)\s*(?:[\d\.]+\w+|\(cached\))?\s*(?:\s+(coverage:\s+\d+\.\d+% of statements)\s*)?(?:` + noTestPattern + `)?$`)
-	failPath   = regexp.MustCompile(`(?m)^FAIL\s+\S+\s+(?:[\d\.]+\w+|\[build failed\])$`)
-	notestPath = regexp.MustCompile(`(?m)^\?\s+\S+` + noTestPattern + `$`)
+	okPath     = regexp.MustCompile(`(?m)^ok[ \t]+([^ \t]+)[ \t]*(?:[\d\.]+\w+|\(cached\))?[ \t]*(?:[ \t]+(coverage:[ \t]+\d+\.\d+% of statements)[ \t]*)?(?:` + noTestPattern + `)?$`)
+	failPath   = regexp.MustCompile(`(?m)^FAIL[ \t]+[^ \t]+[ \t]+(?:[\d\.]+\w+|\[build failed\])$`)
+	notestPath = regexp.MustCompile(`(?m)^\?[ \t]+[^ \t]+` + noTestPattern + `$`)
 
 	coverage = regexp.MustCompile(`(?m)^coverage: ((\d+)\.\d)+% of statements?$`)
 
-	filename   = regexp.MustCompile(`(?m)([^\s:]+\.go)((?::\d+){1,2})`)
-	emptyline  = regexp.MustCompile(`(?m)^\s*\r?\n`)
+	filename   = regexp.MustCompile(`(?m)([^[ \t]:]+\.go)((?::\d+){1,2})`)
+	emptyline  = regexp.MustCompile(`(?m)^[ \t]*\r?\n`)
 	importpath = regexp.MustCompile(`(?m)^# ([^ ]+)(?: \[[^ \[\]]+\])?$`)
 
 	any = regexp.MustCompile(`.*`)
