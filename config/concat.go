@@ -31,19 +31,21 @@ func concatConfig(base, other *Config) *Config {
 		other = &Config{}
 	}
 	return &Config{
-		LabelType:       concatLabelType(base.LabelType, other.LabelType),
-		BuildStyle:      concatStyle(base.BuildStyle, other.BuildStyle),
-		StartStyle:      concatStyle(base.StartStyle, other.StartStyle),
-		PassStyle:       concatStyle(base.PassStyle, other.PassStyle),
-		FailStyle:       concatStyle(base.FailStyle, other.FailStyle),
-		SkipStyle:       concatStyle(base.SkipStyle, other.SkipStyle),
-		FileStyle:       concatStyle(base.FileStyle, other.FileStyle),
-		LineStyle:       concatStyle(base.LineStyle, other.LineStyle),
-		CoverThreshold:  concatInt(base.CoverThreshold, other.CoverThreshold),
-		CoveredStyle:    concatStyle(base.CoveredStyle, other.CoveredStyle),
-		UncoveredStyle:  concatStyle(base.UncoveredStyle, other.UncoveredStyle),
-		Removals:        append(base.Removals, other.Removals...),
-		LeaveTestPrefix: concatBool(base.LeaveTestPrefix, other.LeaveTestPrefix),
+		LabelType:        concatLabelType(base.LabelType, other.LabelType),
+		BuildStyle:       concatStyle(base.BuildStyle, other.BuildStyle),
+		StartStyle:       concatStyle(base.StartStyle, other.StartStyle),
+		PassStyle:        concatStyle(base.PassStyle, other.PassStyle),
+		FailStyle:        concatStyle(base.FailStyle, other.FailStyle),
+		PassPackageStyle: concatStyle(base.PassPackageStyle, other.PassPackageStyle),
+		FailPackageStyle: concatStyle(base.FailPackageStyle, other.FailPackageStyle),
+		SkipStyle:        concatStyle(base.SkipStyle, other.SkipStyle),
+		FileStyle:        concatStyle(base.FileStyle, other.FileStyle),
+		LineStyle:        concatStyle(base.LineStyle, other.LineStyle),
+		CoverThreshold:   concatInt(base.CoverThreshold, other.CoverThreshold),
+		CoveredStyle:     concatStyle(base.CoveredStyle, other.CoveredStyle),
+		UncoveredStyle:   concatStyle(base.UncoveredStyle, other.UncoveredStyle),
+		Removals:         append(base.Removals, other.Removals...),
+		LeaveTestPrefix:  concatBool(base.LeaveTestPrefix, other.LeaveTestPrefix),
 	}
 }
 
@@ -52,19 +54,21 @@ func actualConfig(config *Config) *Config {
 		config = &Config{}
 	}
 	return &Config{
-		LabelType:       actualLabelType(config.LabelType),
-		BuildStyle:      actualStyle(config.BuildStyle),
-		StartStyle:      actualStyle(config.StartStyle),
-		PassStyle:       actualStyle(config.PassStyle),
-		FailStyle:       actualStyle(config.FailStyle),
-		SkipStyle:       actualStyle(config.SkipStyle),
-		FileStyle:       actualStyle(config.FileStyle),
-		LineStyle:       actualStyle(config.LineStyle),
-		CoverThreshold:  actualInt(config.CoverThreshold),
-		CoveredStyle:    actualStyle(config.CoveredStyle),
-		UncoveredStyle:  actualStyle(config.UncoveredStyle),
-		Removals:        config.Removals,
-		LeaveTestPrefix: actualBool(config.LeaveTestPrefix),
+		LabelType:        actualLabelType(config.LabelType),
+		BuildStyle:       actualStyle(config.BuildStyle),
+		StartStyle:       actualStyle(config.StartStyle),
+		PassStyle:        actualStyle(config.PassStyle),
+		FailStyle:        actualStyle(config.FailStyle),
+		PassPackageStyle: actualStyle(config.PassPackageStyle),
+		FailPackageStyle: actualStyle(config.FailPackageStyle),
+		SkipStyle:        actualStyle(config.SkipStyle),
+		FileStyle:        actualStyle(config.FileStyle),
+		LineStyle:        actualStyle(config.LineStyle),
+		CoverThreshold:   actualInt(config.CoverThreshold),
+		CoveredStyle:     actualStyle(config.CoveredStyle),
+		UncoveredStyle:   actualStyle(config.UncoveredStyle),
+		Removals:         config.Removals,
+		LeaveTestPrefix:  actualBool(config.LeaveTestPrefix),
 	}
 }
 
