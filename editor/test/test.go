@@ -40,9 +40,9 @@ var (
 	passlonely = regexp.MustCompile(`(?m)^PASS[ \t]*$`)
 	faillonely = regexp.MustCompile(`(?m)^FAIL[ \t]*$`)
 
-	okPath     = regexp.MustCompile(`(?m)^ok[ \t]+(\S+)[ \t]*(?:[\d\.]+\w+|\(cached\))?[ \t]*(?:[ \t]+(coverage:[ \t]+\d+\.\d+% of statements)[ \t]*)?(?:` + noTestPattern + `)?$`)
-	failPath   = regexp.MustCompile(`(?m)^FAIL[ \t]+\S+[ \t]+(?:[\d\.]+\w+|\[build failed\])$`)
-	notestPath = regexp.MustCompile(`(?m)^\?[ \t]+\S+` + noTestPattern + `$`)
+	okPath     = regexp.MustCompile(`(?m)^ok[ \t]+([^ \t]+)[ \t]*(?:[\d\.]+\w+|\(cached\))?[ \t]*(?:[ \t]+(coverage:[ \t]+\d+\.\d+% of statements)[ \t]*)?(?:` + noTestPattern + `)?$`)
+	failPath   = regexp.MustCompile(`(?m)^FAIL[ \t]+[^ \t]+[ \t]+(?:[\d\.]+\w+|\[build failed\])$`)
+	notestPath = regexp.MustCompile(`(?m)^\?[ \t]+[^ \t]+` + noTestPattern + `$`)
 
 	coverage = regexp.MustCompile(`(?m)^coverage: ((\d+)\.\d)+% of statements?$`)
 
