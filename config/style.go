@@ -74,6 +74,10 @@ func (s *Style) ANSI() aec.ANSI {
 
 // Apply style To string
 func (s *Style) Apply(str string) string {
+	if s == nil {
+		return str
+	}
+
 	if s.Hide != nil && *s.Hide {
 		return ""
 	}
