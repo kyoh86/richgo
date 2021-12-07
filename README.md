@@ -20,8 +20,7 @@ go get -u github.com/kyoh86/richgo
 (homebrew):
 
 ```
-brew tap kyoh86/tap
-brew install richgo
+brew install kyoh86/tap/richgo
 ```
 
 (asdf):
