@@ -7,7 +7,7 @@ require (
 	github.com/rakyll/statik v0.1.7
 	github.com/stretchr/testify v1.4.0
 	github.com/wacul/ptr v1.0.0
-	golang.org/x/sys v0.0.0-20211030160813-b3129d9d1021 // indirect
+	golang.org/x/sys v0.0.0-20220114195835-da31bd327af9 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 )
 
