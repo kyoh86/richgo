@@ -313,6 +313,26 @@ skipStyle:
   foreground: lightYellow
 ```
 
+## Getting a version of the richgo
+
+If you want to get a version of the `richgo`, this information is embedded in the binary (since Go 1.18).
+You can view it with go version -m, e.g. for richgo 0.3.10:
+
+```console
+$ go version -m $(command -v richgo)
+./richgo: go1.18
+	path	github.com/kyoh86/richgo
+	mod	github.com/kyoh86/richgo	v0.3.10	h1:iSGvcjhtQN2IVrBDhPk0if0R/RMQnCN1E/9OyAW4UUs=
+	[...]
+```
+
+And just a little more advanced way (with POSIX `awk`):
+
+```console
+$ go version -m $(command -v richgo) | awk '$1 == "mod" && $2 == "github.com/kyoh86/richgo" {print $3;}'
+v0.3.10
+```
+
 # License
 
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg)](http://www.opensource.org/licenses/MIT)
