@@ -33,16 +33,16 @@ jobs:
           echo "status ${{ steps.test_result.outputs.failedCheckStates }}"
           exit 1
       - name: Checkout Sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Bump-up Semantic Version
         uses: kyoh86/git-vertag-action@v1
         with:
           # method: "major", "minor" or "patch" to update tag with semver
           method: "${{ github.event.inputs.method }}"
       - name: Setup Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v3
         with:
-          go-version: 1.16
+          go-version: 1.18
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
         env:
