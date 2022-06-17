@@ -1,7 +1,7 @@
 .PHONY: gen lint test install man sample
 
-VERSION := `git vertag get`
-COMMIT  := `git rev-parse HEAD`
+VERSION := $(shell git describe --tags --abbrev=0)
+COMMIT  := $(shell git rev-parse HEAD)
 
 gen:
 	go run github.com/rakyll/statik -src=./sample -dest editor/test -include='*.txt' -f
