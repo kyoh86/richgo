@@ -4,6 +4,7 @@ Rich-Go will enrich `go test` outputs with text decorations
 
 [![PkgGoDev](https://pkg.go.dev/badge/kyoh86/richgo)](https://pkg.go.dev/kyoh86/richgo)
 [![Go Report Card](https://goreportcard.com/badge/github.com/kyoh86/richgo)](https://goreportcard.com/report/github.com/kyoh86/richgo)
+[![go-recipes](https://raw.githubusercontent.com/nikolaydubina/go-recipes/main/badge.svg?raw=true)](https://github.com/nikolaydubina/go-recipes)
 [![Coverage Status](https://img.shields.io/codecov/c/github/kyoh86/richgo.svg)](https://codecov.io/gh/kyoh86/richgo)
 [![Release](https://github.com/kyoh86/richgo/workflows/Release/badge.svg)](https://github.com/kyoh86/richgo/releases)
 
