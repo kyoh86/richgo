@@ -120,7 +120,7 @@ buildStyle:
   encircle: (true | false)
   overline: (true | false)
   # Fore-color of text
-  foreground: (#xxxxxx | rgb(0-256,0-256,0-256) | rgb(0x00-0xFF,0x00-0xFF,0x00-0xFF) | (name of colors))
+  foreground: ("#xxxxxx" | rgb(0-256,0-256,0-256) | rgb(0x00-0xFF,0x00-0xFF,0x00-0xFF) | (name of colors))
   # Back-color of text
   background: # Same format as `foreground`
 
