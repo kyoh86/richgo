@@ -1,3 +1,18 @@
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+
+project_name: richgo
+builds:
+  - id: default
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+      - "386"
+    main: .
+    binary: richgo
 brews:
   - install: |
       bin.install "richgo"
@@ -7,3 +22,31 @@ brews:
     folder: Formula
     homepage: https://github.com/kyoh86/richgo
     description: Rich-Go will enrich `go test` outputs with text decorations
+    license: MIT
+nfpms:
+  - builds:
+      - default
+    maintainer: kyoh86 <me@kyoh86.dev>
+    homepage: https://github.com/kyoh86/richgo
+    description: Rich-Go will enrich `go test` outputs with text decorations
+    license: MIT
+    formats:
+      - apk
+      - deb
+      - rpm
+archives:
+  - id: gzip
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - licence*
+      - LICENCE*
+      - license*
+      - LICENSE*
+      - readme*
+      - README*
+      - changelog*
+      - CHANGELOG*
+      - richgo.1
