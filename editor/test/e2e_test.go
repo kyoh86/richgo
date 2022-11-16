@@ -2,7 +2,7 @@ package test
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"strings"
 	"testing"
 
@@ -26,7 +26,7 @@ func TestE2E(t *testing.T) {
 			t.Fatalf("failed to open %s: %s", name, err)
 		}
 		defer r.Close()
-		buf, err := ioutil.ReadAll(r)
+		buf, err := io.ReadAll(r)
 		if err != nil {
 			t.Fatalf("failed to load %s: %s", name, err)
 		}

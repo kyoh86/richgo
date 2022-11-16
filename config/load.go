@@ -2,7 +2,6 @@ package config
 
 import (
 	"go/build"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -62,7 +61,7 @@ func load(path string) ([]byte, error) {
 	if loadForTest != nil {
 		return loadForTest(path)
 	}
-	return ioutil.ReadFile(path)
+	return os.ReadFile(path)
 }
 
 // Load configurations from file
