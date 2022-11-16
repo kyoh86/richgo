@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - '*'
-
 jobs:
   test:
     name: Test local sources
@@ -19,10 +18,9 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18
+          go-version: 1.19
       - name: Test Go
-        run: 	go test -v --race ./...
-
+        run: go test -v --race ./...
   test-release:
     name: Test releases
     runs-on: ubuntu-latest
@@ -32,16 +30,15 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18
+          go-version: 1.19
       - name: Try Bump-up Semantic Version
         uses: kyoh86/git-vertag-action@v1
         with:
           method: "patch"
       - name: Run GoReleaser (dry-run)
-        uses: goreleaser/goreleaser-action@v2
+        uses: goreleaser/goreleaser-action@v3
         with:
           args: release --rm-dist --skip-publish --snapshot
-
   test-others:
     name: Test others
     runs-on: ubuntu-latest
@@ -51,12 +48,11 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18
+          go-version: 1.19
       - name: Search diagnostics
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.32
-
+          version: v1.50.1
   test-status:
     name: Test status
     runs-on: ubuntu-latest
@@ -66,7 +62,7 @@ jobs:
       - test-release
     steps:
       - name: Set Check Status Success
-        uses: Sibz/github-status-action@v1.1.1
+        uses: Sibz/github-status-action@v1.1.6
         with:
           context: test-status
           authToken: ${{ secrets.GITHUB_TOKEN }}
