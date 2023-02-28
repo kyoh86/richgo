@@ -9,6 +9,15 @@ Rich-Go will enrich `go test` outputs with text decorations
 
 [![asciicast](https://asciinema.org/a/99810.png)](https://asciinema.org/a/99810)
 
+# NOTICE (what I think about `richgo`)
+
+For some years, I've not been using `richgo`.
+Now I don't feel much effect that a little bit of tweaking to the appearance of the test output.
+And It is poor method that `richgo` parses and adjusting the standard output of `go test`.
+So now I recommend you that you do NOT use `richgo`, get use to pure `go test`, train an ability to find the error from the output and contribute to improve official `go test` if you needed.
+Some may think that I have too much faith in pure Go, but this is my honest feeling.
+
+
 # Installation
 
 (go get):
