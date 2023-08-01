@@ -33,10 +33,10 @@ type test struct {
 const noTestPattern = `[ \t]+\[(?:no test files|no tests to run)\]`
 
 var (
-	runhead    = regexp.MustCompile(`(?m)^=== RUN   Test.*`)
-	passtail   = regexp.MustCompile(`(?m)^([ \t]*)--- PASS: Test.*`)
-	skiptail   = regexp.MustCompile(`(?m)^([ \t]*)--- SKIP: Test.*`)
-	failtail   = regexp.MustCompile(`(?m)^([ \t]*)--- FAIL: Test.*`)
+	runhead    = regexp.MustCompile(`(?m)^=== RUN   (Test|Benchmark).*`)
+	passtail   = regexp.MustCompile(`(?m)^([ \t]*)--- PASS: (Test|Benchmark).*`)
+	skiptail   = regexp.MustCompile(`(?m)^([ \t]*)--- SKIP: (Test|Benchmark).*`)
+	failtail   = regexp.MustCompile(`(?m)^([ \t]*)--- FAIL: (Test|Benchmark).*`)
 	passlonely = regexp.MustCompile(`(?m)^PASS[ \t]*$`)
 	faillonely = regexp.MustCompile(`(?m)^FAIL[ \t]*$`)
 
