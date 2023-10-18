@@ -9,7 +9,7 @@ Rich-Go will enrich `go test` outputs with text decorations
 
 [![asciicast](https://asciinema.org/a/99810.png)](https://asciinema.org/a/99810)
 
-# NOTICE (what I think about `richgo`)
+## NOTICE (what I think about `richgo`)
 
 For some years, I've not been using `richgo`.
 Now I don't feel much effect that a little bit of tweaking to the appearance of the test output.
@@ -17,37 +17,36 @@ And It is poor method that `richgo` parses and adjusts the standard output of `g
 So now I recommend you that you do NOT use `richgo`, get use to pure `go test`, train an ability to find the error from the output and contribute to improve official `go test` if you needed.
 Some may think that I have too much faith in pure Go, but this is my honest feeling.
 
-
-# Installation
+## Installation
 
 (go get):
 
-```
+```console
 go get -u github.com/kyoh86/richgo
 ```
 
 (homebrew):
 
-```
+```console
 brew install kyoh86/tap/richgo
 ```
 
 (asdf):
 
-```
+```console
 asdf plugin add richgo
 asdf install richgo 0.3.6
 ```
 
-# Usage
+## Usage
 
-## Basic
+### Basic
 
 ```sh
 richgo test ./...
 ```
 
-## In an existing pipeline
+### In an existing pipeline
 
 If your build scripts expect to interact with the standard output format of `go
 test` (for instance, if you're using
@@ -69,20 +68,20 @@ may learn how to produce a standard output format
 [golang/go#2981](https://github.com/golang/go/issues/2981) that both this tool
 and others could rely on.
 
-## alias
+### alias
 
 You can define alias so that `go test` prints rich outputs:
 
 * bash: `~/.bashrc`
 * zsh: `~/.zshrc`
 
-```
+```console
 alias go=richgo
 ```
 
-## Configure
+### Configure
 
-### Configuration file paths
+#### Configuration file paths
 
 It's possible to change styles with the preference file.
 Rich-Go loads preferences from the files in the following order.
@@ -102,7 +101,7 @@ Rich-Go loads preferences from the files in the following order.
 
 Setting the environment variable `RICHGO_LOCAL` to 1, Rich-Go loads only `${CWD}/.richstyle*`.
 
-### Configuration file format
+#### Configuration file format
 
 **Now Rich-Go supports only YAML formatted.**
 
@@ -165,7 +164,7 @@ passPackageStyle:
 failPackageStyle:
   # Same format as `buildStyle`
 
-# A threashold of the coverage
+# A threshold of the coverage
 coverThreshold: (0-100)
 
 # Style of the "Cover" lines with the coverage that is higher than coverThreshold.
@@ -183,61 +182,77 @@ removals:
 leaveTestPrefix: (true | false)
 ```
 
-### Line categories
+#### Line categories
 
 Rich-Go separate the output-lines in following categories.
 
 * Build:  
   When the Go fails to build, it prints errors like this:
 
-  <pre><code># github.com/kyoh86/richgo/sample/buildfail
-  sample/buildfail/buildfail_test.go:6: t.Foo undefined (type testing.T has no field or method Foo)</code></pre>
+  ```console
+  # github.com/kyoh86/richgo/sample/buildfail
+  sample/buildfail/buildfail_test.go:6: t.Foo undefined (type testing.T has no field or method Foo)
+  ```
 
 * Start:  
   In the top of test, Go prints that name like this:
 
-  <pre><code>=== RUN   TestSampleOK/SubtestOK</code></pre>
+  ```console
+  === RUN   TestSampleOK/SubtestOK
+  ```
 
 * Pass:  
-  When a test is successed, Go prints that name like this:
+  When a test succeeds, Go prints that name like this:
 
-  <pre><code>    ---PASS: TestSampleOK/SubtestOK</code></pre>
+  ```console
+      ---PASS: TestSampleOK/SubtestOK
+  ```
 
 * Fail:  
   When a test is failed, Go prints that name like this:
 
-  <pre><code>--- FAIL: TestSampleNG (0.00s)
-  sample_ng_test.go:9: It's not OK... :(</code></pre>
+  ```console
+  --- FAIL: TestSampleNG (0.00s)
+  sample_ng_test.go:9: It's not OK... :(
+  ```
 
 * Skip:  
   If there is no test files in directory or a test is skipped, Go prints that path or the name like this:
 
-  <pre><code>--- SKIP: TestSampleSkip (0.00s)
+  ```console
+  --- SKIP: TestSampleSkip (0.00s)
   sample_skip_test.go:6:
-?     github.com/kyoh86/richgo/sample/notest  [no test files]</code></pre>
+  ?     github.com/kyoh86/richgo/sample/notest  [no test files]
+  ```
 
 * PassPackage:  
-  When tests in package are successed, Go prints just:
+  When tests in package succeed, Go prints just:
 
-  <pre><code>PASS</code></pre>
+  ```console
+  PASS
+  ```
 
 * Fail:  
   When a test in package are failed, Go prints just:
 
-  <pre><code>FAIL</code></pre>
+  ```console
+  FAIL
+  ```
 
 * Cover:  
   If the coverage analysis is enabled, Go prints the coverage like this:
 
-  <pre><code>=== RUN   TestCover05
---- PASS: TestCover05 (0.00s)
-PASS
-coverage: 50.0% of statements
-ok  	github.com/kyoh86/richgo/sample/cover05	0.012s	coverage: 50.0% of statements</code></pre>
+  ```console
+  === RUN   TestCover05
+  --- PASS: TestCover05 (0.00s)
+  PASS
+  coverage: 50.0% of statements
+  ok  	github.com/kyoh86/richgo/sample/cover05	0.012s	coverage: 50.0% of statements
+  ```
 
-Each categories can be styled seperately.
+Each categories can be styled separately.
 
-### Label types
+#### Label types
 
 * Long:
   * Build: "BUILD"
@@ -258,7 +273,7 @@ Each categories can be styled seperately.
 * None:
   Rich-Go will never output labels.
 
-### Default
+#### Default
 
 ```yaml
 labelType: long
@@ -293,7 +308,7 @@ lineStyle:
   foreground: magenta
 ```
 
-## Overriding colorization detection
+### Overriding colorization detection
 
 By default, `richgo` determines whether or not to colorize its output based
 on whether it's connected to a TTY or not. This works for most use cases, but
@@ -307,14 +322,14 @@ running in. For example:
 RICHGO_FORCE_COLOR=1 richgo test ./... | tee test.log
 ```
 
-## Configure to resolve a conflict with "Solarized dark" theme
+### Configure to resolve a conflict with "Solarized dark" theme
 
 The bright-black is used for background color in Solarized dark theme.
 Richgo uses that color for "startStyle" and "skipStyle", so "START" and "SKIP" lines can not be seen on the screen with Solarized dark theme.
 
 To resolve that conflict, you can set another color for "startStyle" and "skipStyle" in [.richstyle](#configuration-file-paths) like below.
 
-```
+```yaml
 startStyle:
   foreground: yellow
 
@@ -322,7 +337,7 @@ skipStyle:
   foreground: lightYellow
 ```
 
-## Getting a version of the richgo
+### Getting a version of the richgo
 
 If you want to get a version of the `richgo`, this information is embedded in the binary (since Go 1.18).
 You can view it with go version -m, e.g. for richgo 0.3.10:
@@ -342,9 +357,8 @@ $ go version -m $(command -v richgo) | awk '$1 == "mod" && $2 == "github.com/kyo
 v0.3.10
 ```
 
-# License
+## License
 
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg)](http://www.opensource.org/licenses/MIT)
 
 This is distributed under the [MIT License](http://www.opensource.org/licenses/MIT).
-
