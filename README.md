@@ -20,9 +20,11 @@ Some may think that I have too much faith in pure Go, but this is my honest feel
 
 # Installation
 
-(go get):
+(go install): 
 
 ```
+go install github.com/kyoh86/richgo@latest
+# or for older go versions
 go get -u github.com/kyoh86/richgo
 ```
 
