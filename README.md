@@ -26,7 +26,7 @@ Some may think that I have too much faith in pure Go, but this is my honest feel
 go get -u github.com/kyoh86/richgo
 ```
 
-(homebrew):
+(Homebrew):
 
 ```
 brew install kyoh86/tap/richgo
@@ -165,7 +165,7 @@ passPackageStyle:
 failPackageStyle:
   # Same format as `buildStyle`
 
-# A threashold of the coverage
+# A threshold of the coverage
 coverThreshold: (0-100)
 
 # Style of the "Cover" lines with the coverage that is higher than coverThreshold.
@@ -187,46 +187,46 @@ leaveTestPrefix: (true | false)
 
 Rich-Go separate the output-lines in following categories.
 
-* Build:  
+* Build:
   When the Go fails to build, it prints errors like this:
 
   <pre><code># github.com/kyoh86/richgo/sample/buildfail
   sample/buildfail/buildfail_test.go:6: t.Foo undefined (type testing.T has no field or method Foo)</code></pre>
 
-* Start:  
+* Start:
   In the top of test, Go prints that name like this:
 
   <pre><code>=== RUN   TestSampleOK/SubtestOK</code></pre>
 
-* Pass:  
-  When a test is successed, Go prints that name like this:
+* Pass:
+  When a test is successful, Go prints that name like this:
 
   <pre><code>    ---PASS: TestSampleOK/SubtestOK</code></pre>
 
-* Fail:  
+* Fail:
   When a test is failed, Go prints that name like this:
 
   <pre><code>--- FAIL: TestSampleNG (0.00s)
   sample_ng_test.go:9: It's not OK... :(</code></pre>
 
-* Skip:  
+* Skip:
   If there is no test files in directory or a test is skipped, Go prints that path or the name like this:
 
   <pre><code>--- SKIP: TestSampleSkip (0.00s)
   sample_skip_test.go:6:
 ?     github.com/kyoh86/richgo/sample/notest  [no test files]</code></pre>
 
-* PassPackage:  
-  When tests in package are successed, Go prints just:
+* PassPackage:
+  When tests in package are successful, Go prints just:
 
   <pre><code>PASS</code></pre>
 
-* Fail:  
+* Fail:
   When a test in package are failed, Go prints just:
 
   <pre><code>FAIL</code></pre>
 
-* Cover:  
+* Cover:
   If the coverage analysis is enabled, Go prints the coverage like this:
 
   <pre><code>=== RUN   TestCover05
@@ -235,7 +235,7 @@ PASS
 coverage: 50.0% of statements
 ok  	github.com/kyoh86/richgo/sample/cover05	0.012s	coverage: 50.0% of statements</code></pre>
 
-Each categories can be styled seperately.
+Each category can be styled separately.
 
 ### Label types
 
@@ -310,7 +310,7 @@ RICHGO_FORCE_COLOR=1 richgo test ./... | tee test.log
 ## Configure to resolve a conflict with "Solarized dark" theme
 
 The bright-black is used for background color in Solarized dark theme.
-Richgo uses that color for "startStyle" and "skipStyle", so "START" and "SKIP" lines can not be seen on the screen with Solarized dark theme.
+richgo uses that color for "startStyle" and "skipStyle", so "START" and "SKIP" lines can not be seen on the screen with Solarized dark theme.
 
 To resolve that conflict, you can set another color for "startStyle" and "skipStyle" in [.richstyle](#configuration-file-paths) like below.
 
