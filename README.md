@@ -17,6 +17,8 @@ And It is poor method that `richgo` parses and adjusts the standard output of `g
 So now I recommend you that you do NOT use `richgo`, get use to pure `go test`, train an ability to find the error from the output and contribute to improve official `go test` if you needed.
 Some may think that I have too much faith in pure Go, but this is my honest feeling.
 
+If you want a good suggestion for alternative tools for this one, you may find it in the [issue #57](https://github.com/kyoh86/richgo/issues/57).
+
 
 # Installation
 
