@@ -216,7 +216,7 @@ Rich-Go separate the output-lines in following categories.
 
   <pre><code>--- SKIP: TestSampleSkip (0.00s)
   sample_skip_test.go:6:
-?     github.com/kyoh86/richgo/sample/notest  [no test files]</code></pre>
+  ?     github.com/kyoh86/richgo/sample/notest  [no test files]</code></pre>
 
 * PassPackage:  
   When tests in package are successed, Go prints just:
@@ -232,10 +232,10 @@ Rich-Go separate the output-lines in following categories.
   If the coverage analysis is enabled, Go prints the coverage like this:
 
   <pre><code>=== RUN   TestCover05
---- PASS: TestCover05 (0.00s)
-PASS
-coverage: 50.0% of statements
-ok  	github.com/kyoh86/richgo/sample/cover05	0.012s	coverage: 50.0% of statements</code></pre>
+  --- PASS: TestCover05 (0.00s)
+  PASS
+  coverage: 50.0% of statements
+  ok  	github.com/kyoh86/richgo/sample/cover05	0.012s	coverage: 50.0% of statements</code></pre>
 
 Each categories can be styled seperately.
 
