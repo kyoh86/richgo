@@ -16,7 +16,7 @@ jobs:
       - name: Checkout Sources
         uses: actions/checkout@v6
       - name: Setup Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v6
         with:
           go-version: 1.19
       - name: Test Go
@@ -28,7 +28,7 @@ jobs:
       - name: Checkout Sources
         uses: actions/checkout@v6
       - name: Setup Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v6
         with:
           go-version: 1.19
       - name: Try Bump-up Semantic Version
@@ -46,7 +46,7 @@ jobs:
       - name: Checkout Sources
         uses: actions/checkout@v6
       - name: Setup Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v6
         with:
           go-version: 1.19
       - name: Search diagnostics

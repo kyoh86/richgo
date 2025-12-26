@@ -43,7 +43,7 @@ jobs:
           # method: "major", "minor" or "patch" to update tag with semver
           method: "${{ github.event.inputs.method }}"
       - name: Setup Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v6
         with:
           go-version: 1.19
       - name: Run GoReleaser
