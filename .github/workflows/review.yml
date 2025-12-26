@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: reviewdog/action-golangci-lint@v1
+      - uses: reviewdog/action-golangci-lint@v2
         with:
           level: info
           github_token: ${{ secrets.GITHUB_TOKEN }}
