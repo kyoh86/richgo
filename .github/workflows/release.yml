@@ -24,7 +24,7 @@ jobs:
         run: exit 1
       - name: Wait Tests
         id: test_result
-        uses: Sibz/await-status-action@v1.0.1
+        uses: Sibz/await-status-action@v1.0.2
         with:
           contexts: test-status
           authToken: ${{ secrets.GITHUB_TOKEN }}
