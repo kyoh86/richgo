@@ -36,7 +36,7 @@ jobs:
         with:
           method: "patch"
       - name: Run GoReleaser (dry-run)
-        uses: goreleaser/goreleaser-action@v6
+        uses: goreleaser/goreleaser-action@v7
         with:
           args: release --clean --skip publish --snapshot
   test-others:
