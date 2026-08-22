@@ -30,7 +30,7 @@ go get -u github.com/kyoh86/richgo
 (homebrew):
 
 ```
-brew install kyoh86/tap/richgo
+brew install richgo
 ```
 
 (asdf):
